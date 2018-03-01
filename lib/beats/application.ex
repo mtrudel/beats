@@ -8,8 +8,8 @@ defmodule Beats.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: Beats.Worker.start_link(arg)
-      # {Beats.Worker, arg},
+      Beats.Conductor,
+      Beats.Metronome
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
