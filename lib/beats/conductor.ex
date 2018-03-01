@@ -18,12 +18,13 @@ defmodule Beats.Conductor do
   # Server API
   
   def init(_arg) do 
-    {:ok, %{beat: 1}}
+    {:ok, output_pid} = PortMidi.open(:output, "IAC Driver IAC Bus 1")
+    {:ok, %{output_pid: output_pid, beat: 1}}
   end
 
-  def handle_call(:do_beat, _from, %{beat: beat} = state) do
-    # TODO fan this out to MIDI, and eventually to multiple channels based on a score
-    System.cmd("/usr/bin/afplay", ["/System/Library/Sounds/Funk.aiff"])
+  def handle_call(:do_beat, _from, %{output_pid: output_pid, beat: beat} = state) do
+    # TODO -- farm this out to players
+    PortMidi.write(output_pid, {0b10010000, 42, 127})
     {:reply, beat, %{state | beat: beat + 1}}
   end
 

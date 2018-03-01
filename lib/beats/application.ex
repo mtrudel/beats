@@ -9,7 +9,9 @@ defmodule Beats.Application do
     # List all child processes to be supervised
     children = [
       Beats.Conductor,
-      Beats.Metronome
+      {Beats.TempoAgent, 180},
+      Beats.Metronome,
+      Beats.Knob,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -14,7 +14,7 @@ defmodule Beats.Metronome do
   # Server API
   
   def init(_arg) do 
-    SchedEx.run_in(__MODULE__, :do_beat, [], 500, repeat: true)
+    SchedEx.run_in(__MODULE__, :do_beat, [], 1, repeat: true, time_scale: Beats.TempoAgent)
     {:ok, %{}}
   end
 
