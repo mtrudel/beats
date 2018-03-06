@@ -7,19 +7,19 @@ defmodule Beats.Metronome do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
-  def do_beat() do
-    GenServer.cast(__MODULE__, :do_beat)
+  def do_tick() do
+    GenServer.cast(__MODULE__, :do_tick)
   end
 
   # Server API
   
   def init(_arg) do 
-    SchedEx.run_in(__MODULE__, :do_beat, [], 1, repeat: true, time_scale: Beats.TempoAgent)
+    SchedEx.run_in(__MODULE__, :do_tick, [], 1, repeat: true, time_scale: Beats.TempoAgent)
     {:ok, %{}}
   end
 
-  def handle_cast(:do_beat, state) do
-    Beats.Conductor.do_beat()
+  def handle_cast(:do_tick, state) do
+    Beats.Conductor.do_tick()
     {:noreply, state}
   end
 end
