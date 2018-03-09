@@ -36,9 +36,12 @@ defmodule Beats.TempoAgent do
   def handle_call({:set_bpm, bpm}, _from, state) do
     bpm = max(bpm, 10)
     realized_bpm = 60 * 1000 / (round(ms_per_16th(bpm)) * 4)
-    error = Float.round(100 - (100 * (bpm / realized_bpm)), 1)
+    error = 100.0 - (100 * (bpm / realized_bpm))
 
-    IO.puts "Setting to #{bpm} BPM (realized #{Float.round(realized_bpm, 2)} error #{error}%)"
+    Beats.Display.set_bpm_actual(realized_bpm)
+    Beats.Display.set_bpm_goal(bpm)
+    Beats.Display.set_bpm_error(error)
+
     {:reply, bpm, %{state | bpm: bpm}}
   end
 

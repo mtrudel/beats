@@ -13,7 +13,7 @@ defmodule Beats.MixProject do
 
   def application do
     [
-      extra_applications: [:logger, :portmidi],
+      extra_applications: [:logger, :portmidi, :ex_ncurses],
       mod: {Beats.Application, []}
     ]
   end
@@ -21,7 +21,9 @@ defmodule Beats.MixProject do
   defp deps do
     [
       {:portmidi, "~> 5.0"},
-      {:sched_ex, "~> 0.6.0"}
+      {:sched_ex, "~> 0.6.0"},
+      {:ex_ncurses, git: "https://github.com/jfreeze/ex_ncurses.git"},
+      {:distillery, "~> 1.4", runtime: false},
     ]
   end
 end

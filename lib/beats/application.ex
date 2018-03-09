@@ -12,6 +12,7 @@ defmodule Beats.Application do
       {Beats.TempoAgent, 180},
       Beats.Metronome,
       Beats.Knob,
+      Beats.Display
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
