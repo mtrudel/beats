@@ -33,8 +33,8 @@ defmodule Beats.Conductor do
     |> Enum.filter(& &1)
     |> Beats.Output.play()
 
-    if sixteenth == 0 do
-      Beats.Display.puts("Starting measure #{measure + 1}")
+    if rem(sixteenth, 4) == 0 do
+      Beats.Display.set_progress(measure, div(sixteenth, 4))
     end
 
     {:reply, tick, %{state | tick: tick + 1}}

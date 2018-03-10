@@ -11,16 +11,20 @@ defmodule Beats.Display do
     GenServer.cast(__MODULE__, {:puts, string})
   end
 
-  def set_bpm_actual(bpm) do
-    GenServer.cast(__MODULE__, {:set_bpm_actual, bpm})
-  end
-
   def set_bpm_goal(bpm) do
     GenServer.cast(__MODULE__, {:set_bpm_goal, bpm})
   end
 
+  def set_bpm_actual(bpm) do
+    GenServer.cast(__MODULE__, {:set_bpm_actual, bpm})
+  end
+
   def set_bpm_error(error) do
     GenServer.cast(__MODULE__, {:set_bpm_error, error})
+  end
+
+  def set_progress(measure, quarter) do
+    GenServer.cast(__MODULE__, {:set_progress, measure, quarter})
   end
 
   # Server API
@@ -29,7 +33,7 @@ defmodule Beats.Display do
 
   def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
-    {:ok, %{console: nil, bpm_actual: 0.0, bpm_goal: 0.0, bpm_error: 0.0}}
+    {:ok, %{}}
   end
 
   def terminate(:normal, _state) do
@@ -49,8 +53,9 @@ defmodule Beats.Display do
     ExNcurses.init_pair(2, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:CYAN))
     ExNcurses.attron(1)
     clear_screen()
-    repaint_console(state)
-    repaint_bpm(state)
+    __MODULE__.set_bpm_goal(0)
+    __MODULE__.set_bpm_actual(0.0)
+    __MODULE__.set_bpm_error(0.0)
     __MODULE__.puts("Setup Complete")
     {:noreply, state}
   end
@@ -58,43 +63,40 @@ defmodule Beats.Display do
   # Console
 
   def handle_cast({:puts, string}, state) do
-    state = %{state | console: string}
-    repaint_console(state)
+    lines = ExNcurses.lines()
+    ExNcurses.mvprintw(lines - 2, 2, "                        ")
+    ExNcurses.mvprintw(lines - 2, 2, string || "")
+    ExNcurses.refresh()
+    {:noreply, state}
+  end
+
+  # Note display
+
+  def handle_cast({:set_progress, measure, quarter}, state) do
+    lines = ExNcurses.lines()
+    ExNcurses.mvprintw(lines - 4, 2, "Measure #{measure + 1}, beat #{quarter + 1}")
+    ExNcurses.refresh()
     {:noreply, state}
   end
 
   # BPM display
 
-  def handle_cast({:set_bpm_actual, bpm}, state) do
-    state = %{state | bpm_actual: bpm}
-    repaint_bpm(state)
+  def handle_cast({:set_bpm_goal, bpm_goal}, state) do
+    ExNcurses.mvprintw(2, 2, "Target BPM: #{bpm_goal}   ")
+    ExNcurses.refresh()
     {:noreply, state}
   end
 
-  def handle_cast({:set_bpm_goal, bpm}, state) do
-    state = %{state | bpm_goal: bpm}
-    repaint_bpm(state)
+  def handle_cast({:set_bpm_actual, bpm_actual}, state) do
+    ExNcurses.mvprintw(3, 2, "Actual BPM: #{Float.round(bpm_actual, 2)}   ")
+    ExNcurses.refresh()
     {:noreply, state}
   end
 
   def handle_cast({:set_bpm_error, error}, state) do
-    state = %{state | bpm_error: error}
-    repaint_bpm(state)
+    ExNcurses.mvprintw(4, 2, "     Error: #{abs(Float.round(error, 2))}%%   ")
+    ExNcurses.refresh()
     {:noreply, state}
-  end
-
-  defp repaint_console(state) do
-    lines = ExNcurses.lines()
-    ExNcurses.mvprintw(lines - 2, 2, "                        ")
-    ExNcurses.mvprintw(lines - 2, 2, state.console || "")
-    ExNcurses.refresh()
-  end
-
-  defp repaint_bpm(state) do
-    ExNcurses.mvprintw(2, 2, "Target BPM: #{state.bpm_goal}   ")
-    ExNcurses.mvprintw(3, 2, "Actual BPM: #{Float.round(state.bpm_actual, 2)}   ")
-    ExNcurses.mvprintw(4, 2, "     Error: #{abs(Float.round(state.bpm_error, 2))}%%   ")
-    ExNcurses.refresh()
   end
 
   # Background 
