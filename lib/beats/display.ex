@@ -7,6 +7,10 @@ defmodule Beats.Display do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
+  def puts(string) do
+    GenServer.cast(__MODULE__, {:puts, string})
+  end
+
   def set_bpm_actual(bpm) do
     GenServer.cast(__MODULE__, {:set_bpm_actual, bpm})
   end
@@ -25,7 +29,7 @@ defmodule Beats.Display do
   
   def init(_arg) do 
     GenServer.cast(__MODULE__, :setup)
-    {:ok, %{bpm_actual: 0.0, bpm_goal: 0.0, bpm_error: 0.0}}
+    {:ok, %{console: nil, bpm_actual: 0.0, bpm_goal: 0.0, bpm_error: 0.0}}
   end
 
   def terminate(:normal, _state) do
@@ -45,7 +49,17 @@ defmodule Beats.Display do
     ExNcurses.init_pair(2, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:CYAN))
     ExNcurses.attron(1)
     clear_screen()
+    repaint_console(state)
     repaint_bpm(state)
+    __MODULE__.puts("Setup Complete")
+    {:noreply, state}
+  end
+
+  # Console
+
+  def handle_cast({:puts, string}, state) do
+    state = %{state | console: string}
+    repaint_console(state)
     {:noreply, state}
   end
 
@@ -67,6 +81,13 @@ defmodule Beats.Display do
     state = %{state | bpm_error: error}
     repaint_bpm(state)
     {:noreply, state}
+  end
+
+  defp repaint_console(state) do
+    lines = ExNcurses.lines()
+    ExNcurses.mvprintw(lines - 2, 2, "                        ")
+    ExNcurses.mvprintw(lines - 2, 2, state.console || "")
+    ExNcurses.refresh()
   end
 
   defp repaint_bpm(state) do

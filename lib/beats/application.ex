@@ -8,6 +8,7 @@ defmodule Beats.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      Beats.Output,
       Beats.Conductor,
       {Beats.TempoAgent, 180},
       Beats.Metronome,

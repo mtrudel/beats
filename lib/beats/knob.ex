@@ -21,7 +21,27 @@ defmodule Beats.Knob do
     {:noreply, state}
   end
 
-  def handle_info({_pid, events}, state) do
+  def handle_info({_pid, [{{_status, 19 = _channel, 127}, _timestamp} | _]}, state) do
+    Beats.Display.puts("Button 1 Pressed")
+    {:noreply, state}
+  end
+
+  def handle_info({_pid, [{{_status, 20 = _channel, 127}, _timestamp} | _]}, state) do
+    Beats.Display.puts("Button 2 Pressed")
+    {:noreply, state}
+  end
+
+  def handle_info({_pid, [{{_status, 21 = _channel, 127}, _timestamp} | _]}, state) do
+    Beats.Display.puts("Button 3 Pressed")
+    {:noreply, state}
+  end
+
+  def handle_info({_pid, [{{_status, 22 = _channel, 127}, _timestamp} | _]}, state) do
+    Beats.Display.puts("Button 4 Pressed")
+    {:noreply, state}
+  end
+
+  def handle_info({_pid, _events}, state) do
     {:noreply, state}
   end
 end
