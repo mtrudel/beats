@@ -56,6 +56,7 @@ defmodule Beats.Display do
     __MODULE__.set_bpm_goal(0)
     __MODULE__.set_bpm_actual(0.0)
     __MODULE__.set_bpm_error(0.0)
+    SchedEx.run_in(__MODULE__, :handle_input, [], 50, repeat: true)
     __MODULE__.puts("Setup Complete")
     {:noreply, state}
   end
@@ -97,6 +98,19 @@ defmodule Beats.Display do
     ExNcurses.mvprintw(4, 2, "     Error: #{abs(Float.round(error, 2))}%%   ")
     ExNcurses.refresh()
     {:noreply, state}
+  end
+
+  # Input
+
+  def handle_input do
+    case ExNcurses.getch() do
+      -1 -> nil
+      ch -> case List.to_string([ch]) do
+        "u" -> Beats.TempoAgent.speed_up()
+        "d" -> Beats.TempoAgent.slow_down()
+        _ -> nil
+      end
+    end
   end
 
   # Background 
