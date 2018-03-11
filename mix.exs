@@ -22,7 +22,7 @@ defmodule Beats.MixProject do
     [
       {:file_system, "~> 0.2"},
       {:poison, "~> 3.1"},
-      {:portmidi, "~> 5.0"},
+      {:portmidi, git: "https://github.com/mtrudel/ex-portmidi"},
       {:sched_ex, "~> 0.6.0"},
       {:ex_ncurses, git: "https://github.com/jfreeze/ex_ncurses.git"},
       {:distillery, "~> 1.4", runtime: false}
