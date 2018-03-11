@@ -108,6 +108,7 @@ defmodule Beats.Display do
       ch -> case List.to_string([ch]) do
         "u" -> Beats.TempoAgent.speed_up()
         "d" -> Beats.TempoAgent.slow_down()
+        " " -> Beats.Metronome.toggle()
         _ -> nil
       end
     end
