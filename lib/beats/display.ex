@@ -27,6 +27,10 @@ defmodule Beats.Display do
     GenServer.cast(__MODULE__, {:set_bpm_error, error})
   end
 
+  def set_playing(playing) do
+    GenServer.cast(__MODULE__, {:set_playing, playing})
+  end
+
   def set_progress(measure, quarter) do
     GenServer.cast(__MODULE__, {:set_progress, measure, quarter})
   end
@@ -55,6 +59,8 @@ defmodule Beats.Display do
     __MODULE__.set_bpm_goal(0)
     __MODULE__.set_bpm_actual(0.0)
     __MODULE__.set_bpm_error(0.0)
+    __MODULE__.set_playing(false)
+    __MODULE__.set_progress(0, 0)
     SchedEx.run_in(__MODULE__, :handle_input, [], 50, repeat: true)
     __MODULE__.puts("Setup Complete")
     {:noreply, state}
@@ -72,9 +78,17 @@ defmodule Beats.Display do
 
   # Note display
 
+  def handle_cast({:set_playing, playing}, state) do
+    lines = ExNcurses.lines()
+    message = if playing, do: "PLAYING", else: "STOPPED"
+    ExNcurses.mvprintw(lines - 4, 2, message)
+    ExNcurses.refresh()
+    {:noreply, state}
+  end
+
   def handle_cast({:set_progress, measure, quarter}, state) do
     lines = ExNcurses.lines()
-    ExNcurses.mvprintw(lines - 4, 2, "Measure #{measure + 1}, beat #{quarter + 1}")
+    ExNcurses.mvprintw(lines - 4, 10, "Measure #{measure + 1}, beat #{quarter + 1}")
     ExNcurses.refresh()
     {:noreply, state}
   end
@@ -105,8 +119,8 @@ defmodule Beats.Display do
     case ExNcurses.getch() do
       -1 -> nil
       ch -> case List.to_string([ch]) do
-        "u" -> Beats.TempoAgent.speed_up()
-        "d" -> Beats.TempoAgent.slow_down()
+        "u" -> Beats.Metronome.speed_up()
+        "d" -> Beats.Metronome.slow_down()
         " " -> Beats.Metronome.toggle()
         "r" -> kill_display()
         "q" -> System.halt()

@@ -19,12 +19,12 @@ defmodule Beats.Knob do
   end
 
   def handle_info({_pid, [{{_status, 16 = _channel, 0}, _timestamp} | _]}, state) do
-    Beats.TempoAgent.slow_down()
+    Beats.Metronome.slow_down()
     {:noreply, state}
   end
 
   def handle_info({_pid, [{{_status, 16 = _channel, 127}, _timestamp} | _]}, state) do
-    Beats.TempoAgent.speed_up()
+    Beats.Metronome.speed_up()
     {:noreply, state}
   end
 

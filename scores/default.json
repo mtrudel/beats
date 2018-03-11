@@ -1,5 +1,6 @@
 {
   "name": "basic",
+  "bpm": 120,
   "parts": [
     {"name": "bd", "voice": 36, "pattern": "X         X     "},
     {"name": "hc", "voice": 39, "pattern": "    x       X   "},

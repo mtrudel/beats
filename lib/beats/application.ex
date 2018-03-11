@@ -8,15 +8,14 @@ defmodule Beats.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      Beats.Metronome,
       Beats.FileWatcher,
       Beats.Output,
       Beats.Conductor,
-      {Beats.TempoAgent, 180},
-      Beats.Metronome,
       Beats.Knob
     ]
 
-    children = if IEx.started?, do: children, else: children ++ [Beats.Display]
+    children = if IEx.started?, do: children, else: [Beats.Display] ++ children
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

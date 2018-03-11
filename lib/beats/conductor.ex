@@ -20,6 +20,8 @@ defmodule Beats.Conductor do
   def init(_arg) do
     Beats.FileWatcher.subscribe()
     score = Beats.Score.default_score()
+    Beats.Metronome.set_bpm(score.desired_bpm)
+    Beats.Metronome.toggle()
     {:ok, %{tick: 1, score: score, pending_score: nil}}
   end
 
@@ -39,6 +41,7 @@ defmodule Beats.Conductor do
     end
 
     if (sixteenth == 15 && pending_score) do
+      Beats.Metronome.set_bpm(pending_score.desired_bpm)
       {:reply, tick, %{tick: tick + 1, score: pending_score, pending_score: nil}}
     else
       {:reply, tick, %{state | tick: tick + 1}}
@@ -50,7 +53,7 @@ defmodule Beats.Conductor do
     {:reply, to, %{state | tick: to}}
   end
 
-  def handle_info({:file_event, _watcher_pid, {path, events}}, state) do
+  def handle_info({:file_event, _watcher_pid, {path, _events}}, state) do
     if String.ends_with?(path, ".json") do
       score = Beats.Score.score_from_file(path)
       {:noreply, %{state | pending_score: score}}

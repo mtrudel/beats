@@ -3,8 +3,8 @@ defmodule Beats.TempoAgent do
 
   # Client API
 
-  def start_link(bpm) do
-    GenServer.start_link(__MODULE__, bpm, name: __MODULE__)
+  def start_link() do
+    GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
   def slow_down(by \\ 2) do
@@ -25,8 +25,8 @@ defmodule Beats.TempoAgent do
 
   # Server API
 
-  def init(bpm) do
-    {:ok, %{bpm: bpm}}
+  def init(_) do
+    {:ok, %{bpm: 0}}
   end
 
   def handle_call({:adjust_bpm, by}, from, %{bpm: bpm} = state) do
