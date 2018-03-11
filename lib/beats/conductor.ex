@@ -18,11 +18,12 @@ defmodule Beats.Conductor do
   # Server API
 
   def init(_arg) do
+    Beats.FileWatcher.subscribe()
     score = Beats.Score.default_score()
-    {:ok, %{tick: 1, score: score}}
+    {:ok, %{tick: 1, score: score, pending_score: nil}}
   end
 
-  def handle_call(:do_tick, _from, %{score: score, tick: tick} = state) do
+  def handle_call(:do_tick, _from, %{score: score, pending_score: pending_score, tick: tick} = state) do
     # Map the tick into a musical measure and direct everyone to play it
     measure = div(tick, 16)
     sixteenth = rem(tick, 16)
@@ -37,11 +38,24 @@ defmodule Beats.Conductor do
       Beats.Display.set_progress(measure, div(sixteenth, 4))
     end
 
-    {:reply, tick, %{state | tick: tick + 1}}
+    if (sixteenth == 15 && pending_score) do
+      {:reply, tick, %{tick: tick + 1, score: pending_score, pending_score: nil}}
+    else
+      {:reply, tick, %{state | tick: tick + 1}}
+    end
   end
 
   def handle_call({:reset_tick, to}, _from, state) do
     Beats.Display.puts("Resetting tick to #{to}")
     {:reply, to, %{state | tick: to}}
+  end
+
+  def handle_info({:file_event, _watcher_pid, {path, events}}, state) do
+    if String.ends_with?(path, ".json") do
+      score = Beats.Score.score_from_file(path)
+      {:noreply, %{state | pending_score: score}}
+    else
+      {:noreply, state}
+    end
   end
 end

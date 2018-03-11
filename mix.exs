@@ -20,6 +20,7 @@ defmodule Beats.MixProject do
 
   defp deps do
     [
+      {:file_system, "~> 0.2"},
       {:poison, "~> 3.1"},
       {:portmidi, "~> 5.0"},
       {:sched_ex, "~> 0.6.0"},
