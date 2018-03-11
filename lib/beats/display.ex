@@ -24,17 +24,17 @@ defmodule Beats.Display do
   end
 
   # Server API
-  
+
   # Basic setup & screen maintenance
-  
-  def init(_arg) do 
+
+  def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
     {:ok, %{console: nil, bpm_actual: 0.0, bpm_goal: 0.0, bpm_error: 0.0}}
   end
 
   def terminate(:normal, _state) do
     ExNcurses.n_end()
-    System.halt
+    System.halt()
   end
 
   def terminate(_reason, _state) do
@@ -102,9 +102,12 @@ defmodule Beats.Display do
   defp clear_screen do
     lines = ExNcurses.lines()
     cols = ExNcurses.cols()
-    for line <- 0..lines, col <- 0..cols do
+
+    for line <- 0..lines,
+        col <- 0..cols do
       ExNcurses.mvprintw(line, col, " ")
     end
+
     ExNcurses.attron(2)
     ExNcurses.mvprintw(1, cols - 38, ~S( ___.                  __           ))
     ExNcurses.mvprintw(2, cols - 38, ~S( \_ |__   ____ _____ _/  |_  ______ ))

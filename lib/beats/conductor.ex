@@ -16,8 +16,8 @@ defmodule Beats.Conductor do
   end
 
   # Server API
-  
-  def init(_arg) do 
+
+  def init(_arg) do
     score = Beats.Score.default_score()
     {:ok, %{tick: 1, score: score}}
   end
@@ -30,7 +30,7 @@ defmodule Beats.Conductor do
     # Collect all the notes to play from the current score and play them
     score.parts
     |> Enum.map(&Beats.Part.note_for(&1, measure, sixteenth))
-    |> Enum.filter(&(&1))
+    |> Enum.filter(& &1)
     |> Beats.Output.play()
 
     if sixteenth == 0 do
@@ -41,7 +41,7 @@ defmodule Beats.Conductor do
   end
 
   def handle_call({:reset_tick, to}, _from, state) do
-    Beats.Display.puts "Resetting tick to #{to}"
+    Beats.Display.puts("Resetting tick to #{to}")
     {:reply, to, %{state | tick: to}}
   end
 end
