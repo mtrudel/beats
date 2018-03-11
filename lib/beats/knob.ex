@@ -34,22 +34,22 @@ defmodule Beats.Knob do
   end
 
   def handle_info({_pid, [{{_status, 19 = _channel, 127}, _timestamp} | _]}, state) do
-    Beats.Display.puts("Button 1 Pressed")
+    Beats.Conductor.play_fill(1)
     {:noreply, state}
   end
 
   def handle_info({_pid, [{{_status, 20 = _channel, 127}, _timestamp} | _]}, state) do
-    Beats.Display.puts("Button 2 Pressed")
+    Beats.Conductor.play_fill(2)
     {:noreply, state}
   end
 
   def handle_info({_pid, [{{_status, 21 = _channel, 127}, _timestamp} | _]}, state) do
-    Beats.Display.puts("Button 3 Pressed")
+    Beats.Conductor.play_fill(3)
     {:noreply, state}
   end
 
   def handle_info({_pid, [{{_status, 22 = _channel, 127}, _timestamp} | _]}, state) do
-    Beats.Display.puts("Button 4 Pressed")
+    Beats.Conductor.play_fill(4)
     {:noreply, state}
   end
 

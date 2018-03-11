@@ -15,6 +15,10 @@ defmodule Beats.Conductor do
     GenServer.call(__MODULE__, {:reset_tick, to})
   end
 
+  def play_fill(num) do
+    GenServer.call(__MODULE__, {:play_fill, num})
+  end
+
   # Server API
 
   def init(_arg) do
@@ -22,10 +26,10 @@ defmodule Beats.Conductor do
     score = Beats.Score.default_score()
     Beats.Metronome.set_bpm(score.desired_bpm)
     Beats.Metronome.toggle()
-    {:ok, %{tick: 1, score: score, pending_score: nil}}
+    {:ok, %{tick: 1, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
-  def handle_call(:do_tick, _from, %{score: score, pending_score: pending_score, tick: tick} = state) do
+  def handle_call(:do_tick, _from, %{score: score, current_score: current_score, pending_score: pending_score, pending_fill: pending_fill, tick: tick} = state) do
     # Map the tick into a musical measure and direct everyone to play it
     measure = div(tick, 16)
     sixteenth = rem(tick, 16)
@@ -40,17 +44,34 @@ defmodule Beats.Conductor do
       Beats.Display.set_progress(measure, div(sixteenth, 4))
     end
 
-    if (sixteenth == 15 && pending_score) do
-      Beats.Metronome.set_bpm(pending_score.desired_bpm)
-      {:reply, tick, %{tick: tick + 1, score: pending_score, pending_score: nil}}
-    else
-      {:reply, tick, %{state | tick: tick + 1}}
+    cond do
+      sixteenth == 15 && pending_score ->
+        # New score coming our way
+        Beats.Metronome.set_bpm(pending_score.desired_bpm)
+        {:reply, tick, %{tick: tick + 1, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
+      sixteenth == 15 && pending_fill ->
+        # Fill request enqueued
+        {:reply, tick, %{tick: tick + 1, score: pending_fill, current_score: current_score, pending_score: nil, pending_fill: nil}}
+      sixteenth == 15 && score != current_score ->
+        # Restoring after a fill
+        {:reply, tick, %{tick: tick + 1, score: current_score, current_score: current_score, pending_score: nil, pending_fill: nil}}
+      true ->
+        {:reply, tick, %{state | tick: tick + 1}}
     end
   end
 
   def handle_call({:reset_tick, to}, _from, state) do
     Beats.Display.puts("Resetting tick to #{to}")
     {:reply, to, %{state | tick: to}}
+  end
+
+  def handle_call({:play_fill, num}, _from, %{current_score: %{fills: fills}} = state) do
+    if length(fills) >= num do
+      {:reply, :ok, %{state | pending_fill: Enum.at(fills, num - 1)}}
+    else
+      Beats.Display.puts("Fill #{num} not defined")
+      {:reply, :no_such_fill, state}
+    end
   end
 
   def handle_info({:file_event, _watcher_pid, {path, _events}}, state) do

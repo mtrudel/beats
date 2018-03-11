@@ -1,5 +1,5 @@
 defmodule Beats.Score do
-  defstruct name: nil, desired_bpm: 120, parts: [Beats.Part]
+  defstruct name: nil, desired_bpm: 120, parts: [Beats.Part], fills: [Beats.Score]
 
   def default_score do
     score_from_file("/Users/mat/Code/beats/scores/default.json")
@@ -8,11 +8,16 @@ defmodule Beats.Score do
   def score_from_file(filename) do
     with {:ok, body} <- File.read(filename),
          {:ok, json} <- Poison.decode(body) do
-      %__MODULE__{
-        name: Map.get(json, "name"),
-        desired_bpm: Map.get(json, "bpm"),
-        parts: Map.get(json, "parts") |> Enum.map(&Beats.Part.from_json/1)
-      }
+      from_json(json)
     end
+  end
+
+  def from_json(json) do
+    %__MODULE__{
+      name: Map.get(json, "name"),
+      desired_bpm: Map.get(json, "bpm"),
+      parts: Map.get(json, "parts") |> Enum.map(&Beats.Part.from_json/1),
+      fills: Map.get(json, "fills", []) |> Enum.map(&Beats.Score.from_json/1)
+    }
   end
 end

@@ -119,6 +119,10 @@ defmodule Beats.Display do
     case ExNcurses.getch() do
       -1 -> nil
       ch -> case List.to_string([ch]) do
+        "1" -> Beats.Conductor.play_fill(1)
+        "2" -> Beats.Conductor.play_fill(2)
+        "3" -> Beats.Conductor.play_fill(3)
+        "4" -> Beats.Conductor.play_fill(4)
         "u" -> Beats.Metronome.speed_up()
         "d" -> Beats.Metronome.slow_down()
         " " -> Beats.Metronome.toggle()
