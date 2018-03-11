@@ -13,9 +13,10 @@ defmodule Beats.Application do
       Beats.Conductor,
       {Beats.TempoAgent, 180},
       Beats.Metronome,
-      Beats.Knob,
-      Beats.Display
+      Beats.Knob
     ]
+
+    children = if IEx.started?, do: children, else: children ++ [Beats.Display]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
