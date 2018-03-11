@@ -6,9 +6,16 @@ defmodule Beats.Knob do
   end
 
   def init(_arg) do
-    {:ok, midi_pid} = PortMidi.open(:input, "Teensy MIDI")
-    PortMidi.listen(midi_pid, self())
-    {:ok, %{midi_pid: midi_pid}}
+    if PortMidi.devices()
+    |> Map.get(:input)
+    |> Enum.map(&(&1.name))
+    |> Enum.member?("Teensy MIDI") do
+      {:ok, midi_pid} = PortMidi.open(:input, "Teensy MIDI")
+      PortMidi.listen(midi_pid, self())
+      {:ok, %{midi_pid: midi_pid}}
+    else
+      :ignore
+    end
   end
 
   def handle_info({_pid, [{{_status, 16 = _channel, 0}, _timestamp} | _]}, state) do
