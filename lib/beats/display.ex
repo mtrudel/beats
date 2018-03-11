@@ -7,6 +7,10 @@ defmodule Beats.Display do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
+  def kill_display do
+    GenServer.stop(__MODULE__)
+  end
+
   def puts(string) do
     GenServer.cast(__MODULE__, {:puts, string})
   end
@@ -34,11 +38,6 @@ defmodule Beats.Display do
   def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
     {:ok, %{}}
-  end
-
-  def terminate(:normal, _state) do
-    ExNcurses.n_end()
-    System.halt()
   end
 
   def terminate(_reason, _state) do
@@ -109,6 +108,8 @@ defmodule Beats.Display do
         "u" -> Beats.TempoAgent.speed_up()
         "d" -> Beats.TempoAgent.slow_down()
         " " -> Beats.Metronome.toggle()
+        "r" -> kill_display()
+        "q" -> System.halt()
         _ -> nil
       end
     end
