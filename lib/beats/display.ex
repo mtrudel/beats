@@ -32,7 +32,15 @@ defmodule Beats.Display do
   end
 
   def set_progress(measure, quarter) do
-    GenServer.cast(__MODULE__, {:set_progress, measure, quarter})
+    GenServer.call(__MODULE__, {:set_progress, measure, quarter})
+  end
+
+  def draw_beat(beat, highlighted) do
+    GenServer.call(__MODULE__, {:draw_beat, beat, highlighted})
+  end
+
+  def set_score(score) do
+    GenServer.cast(__MODULE__, {:set_score, score})
   end
 
   # Server API
@@ -41,7 +49,7 @@ defmodule Beats.Display do
 
   def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
-    {:ok, %{}}
+    {:ok, %{pattern: []}}
   end
 
   def terminate(_reason, _state) do
@@ -54,13 +62,14 @@ defmodule Beats.Display do
     ExNcurses.start_color()
     ExNcurses.init_pair(1, ExNcurses.clr(:WHITE), ExNcurses.clr(:CYAN))
     ExNcurses.init_pair(2, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:CYAN))
+    ExNcurses.init_pair(3, ExNcurses.clr(:YELLOW), ExNcurses.clr(:BLACK))
+    ExNcurses.init_pair(4, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:WHITE))
     ExNcurses.attron(1)
     clear_screen()
     __MODULE__.set_bpm_goal(0)
     __MODULE__.set_bpm_actual(0.0)
     __MODULE__.set_bpm_error(0.0)
     __MODULE__.set_playing(false)
-    __MODULE__.set_progress(0, 0)
     SchedEx.run_in(__MODULE__, :handle_input, [], 50, repeat: true)
     __MODULE__.puts("Setup Complete")
     {:noreply, state}
@@ -86,11 +95,11 @@ defmodule Beats.Display do
     {:noreply, state}
   end
 
-  def handle_cast({:set_progress, measure, quarter}, state) do
+  def handle_call({:set_progress, measure, quarter}, _from, state) do
     lines = ExNcurses.lines()
     ExNcurses.mvprintw(lines - 4, 10, "Measure #{measure + 1}, beat #{quarter + 1}")
     ExNcurses.refresh()
-    {:noreply, state}
+    {:reply, :ok, state}
   end
 
   # BPM display
@@ -111,6 +120,66 @@ defmodule Beats.Display do
     ExNcurses.mvprintw(4, 2, "     Error: #{abs(Float.round(error, 2))}%%   ")
     ExNcurses.refresh()
     {:noreply, state}
+  end
+
+  # Score display
+  
+  def handle_cast({:set_score, %Beats.Score{parts: parts}}, state) do
+    for line <- 9..(12 * 3),
+        col <- 2..(6 + (32 * 4)) do
+      ExNcurses.mvprintw(line, col, " ")
+    end
+
+    parts
+    |> Enum.with_index()
+    |> Enum.each(fn({%Beats.Part{name: name}, index}) -> 
+      ExNcurses.attron(1)
+      ExNcurses.mvprintw(9 + (3 * index), 3, name)
+    end)
+    ExNcurses.attron(1)
+    ExNcurses.refresh()
+
+    longest_pattern = parts
+                      |> Enum.map(&(length(&1.pattern)))
+                      |> Enum.max()
+
+    pattern = 0..(longest_pattern - 1)
+              |> Enum.map(fn(column) ->
+                parts
+                |> Enum.map(fn(%Beats.Part{pattern: pattern}) -> 
+                  case Enum.at(pattern, rem(column, length(pattern))) do
+                    0 -> " "
+                    1 -> "x"
+                    2 -> "X"
+                  end
+                end)
+              end)
+
+    for column <- 0..(longest_pattern - 1) do
+      handle_call({:draw_beat, column, false}, nil, %{pattern: pattern})
+    end
+
+    {:noreply, %{state | pattern: pattern}}
+  end
+
+  def handle_call({:draw_beat, beat, highlighted}, _from, %{pattern: pattern} = state) do
+    if highlighted do
+      ExNcurses.attron(4)
+    else
+      ExNcurses.attron(3)
+    end
+
+    column = rem(beat, length(pattern))
+    pattern
+    |> Enum.at(column)
+    |> Enum.with_index()
+    |> Enum.each(fn({to_draw, index}) -> 
+      ExNcurses.mvprintw(9 + (3 * index), 6 + (4 * column), "#{to_draw}#{to_draw}#{to_draw}")
+      ExNcurses.mvprintw(10 + (3 * index), 6 + (4 * column), "#{to_draw}#{to_draw}#{to_draw}")
+    end)
+    ExNcurses.attron(1)
+    ExNcurses.refresh()
+    {:reply, :ok, state}
   end
 
   # Input

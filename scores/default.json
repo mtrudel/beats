@@ -2,37 +2,37 @@
   "name": "default",
   "bpm": 190,
   "parts": [
-    {"name": "bd", "voice": 36, "pattern": "X         X     "},
-    {"name": "hc", "voice": 39, "pattern": "                "},
-    {"name": "sd", "voice": 38, "pattern": "    X       X   "},
-    {"name": "ss", "voice": 37, "pattern": "                "},
-    {"name": "sd", "voice": 40, "pattern": "                "},
-    {"name": "ch", "voice": 42, "pattern": "X X X X X X X X "},
-    {"name": "oh", "voice": 46, "pattern": "                "}
+    {"name": "BD", "voice": 36, "pattern": "X         X     "},
+    {"name": "HC", "voice": 39, "pattern": "                "},
+    {"name": "SD", "voice": 38, "pattern": "    X       X   "},
+    {"name": "SS", "voice": 37, "pattern": "                "},
+    {"name": "SD", "voice": 40, "pattern": "                "},
+    {"name": "CH", "voice": 42, "pattern": "X X X X X X X X "},
+    {"name": "OH", "voice": 46, "pattern": "                "}
   ],
   "fills": [
     {
       "name": "bass",
       "parts": [
-        {"name": "bd", "voice": 36, "pattern": "X X X X X X X X "},
-        {"name": "hc", "voice": 39, "pattern": "                "},
-        {"name": "sd", "voice": 38, "pattern": "                "},
-        {"name": "ss", "voice": 37, "pattern": "                "},
-        {"name": "sd", "voice": 40, "pattern": "                "},
-        {"name": "ch", "voice": 42, "pattern": "                "},
-        {"name": "oh", "voice": 46, "pattern": "                "}
+        {"name": "BD", "voice": 36, "pattern": "X X X X X X X X "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "                "},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 42, "pattern": "                "},
+        {"name": "OH", "voice": 46, "pattern": "                "}
       ]
     },
     {
       "name": "snare",
       "parts": [
-        {"name": "bd", "voice": 36, "pattern": "                "},
-        {"name": "hc", "voice": 39, "pattern": "                "},
-        {"name": "sd", "voice": 38, "pattern": "Xx"},
-        {"name": "ss", "voice": 37, "pattern": "                "},
-        {"name": "sd", "voice": 40, "pattern": "                "},
-        {"name": "ch", "voice": 42, "pattern": "                "},
-        {"name": "oh", "voice": 46, "pattern": "                "}
+        {"name": "BD", "voice": 36, "pattern": "                "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "Xx"},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 42, "pattern": "                "},
+        {"name": "OH", "voice": 46, "pattern": "                "}
       ]
     }
   ]
