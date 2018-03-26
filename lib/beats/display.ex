@@ -62,8 +62,9 @@ defmodule Beats.Display do
     ExNcurses.start_color()
     ExNcurses.init_pair(1, ExNcurses.clr(:WHITE), ExNcurses.clr(:CYAN))
     ExNcurses.init_pair(2, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:CYAN))
-    ExNcurses.init_pair(3, ExNcurses.clr(:YELLOW), ExNcurses.clr(:BLACK))
-    ExNcurses.init_pair(4, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:WHITE))
+    ExNcurses.init_pair(3, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLACK))
+    ExNcurses.init_pair(4, ExNcurses.clr(:WHITE), ExNcurses.clr(:RED))
+    ExNcurses.init_pair(5, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLUE))
     ExNcurses.attron(1)
     clear_screen()
     __MODULE__.set_bpm_goal(0)
@@ -147,11 +148,7 @@ defmodule Beats.Display do
               |> Enum.map(fn(column) ->
                 parts
                 |> Enum.map(fn(%Beats.Part{pattern: pattern}) -> 
-                  case Enum.at(pattern, rem(column, length(pattern))) do
-                    0 -> " "
-                    1 -> "x"
-                    2 -> "X"
-                  end
+                  Enum.at(pattern, rem(column, length(pattern)))
                 end)
               end)
 
@@ -163,19 +160,18 @@ defmodule Beats.Display do
   end
 
   def handle_call({:draw_beat, beat, highlighted}, _from, %{pattern: pattern} = state) do
-    if highlighted do
-      ExNcurses.attron(4)
-    else
-      ExNcurses.attron(3)
-    end
-
     column = rem(beat, length(pattern))
     pattern
     |> Enum.at(column)
     |> Enum.with_index()
     |> Enum.each(fn({to_draw, index}) -> 
-      ExNcurses.mvprintw(9 + (3 * index), 6 + (4 * column), "#{to_draw}#{to_draw}#{to_draw}")
-      ExNcurses.mvprintw(10 + (3 * index), 6 + (4 * column), "#{to_draw}#{to_draw}#{to_draw}")
+      cond do 
+        to_draw != 0 && highlighted -> ExNcurses.attron(4)
+        to_draw != 0 -> ExNcurses.attron(5)
+        true -> ExNcurses.attron(3)
+      end
+      ExNcurses.mvprintw(9 + (3 * index), 6 + (4 * column), "   ")
+      ExNcurses.mvprintw(10 + (3 * index), 6 + (4 * column), "   ")
     end)
     ExNcurses.attron(1)
     ExNcurses.refresh()
