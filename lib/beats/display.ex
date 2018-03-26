@@ -49,7 +49,7 @@ defmodule Beats.Display do
 
   def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
-    {:ok, %{pattern: []}}
+    {:ok, %{pattern: [[]]}}
   end
 
   def terminate(_reason, _state) do
