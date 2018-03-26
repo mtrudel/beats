@@ -27,7 +27,7 @@ defmodule Beats.Conductor do
     Beats.Display.set_score(score)
     Beats.Metronome.set_bpm(score.desired_bpm)
     Beats.Metronome.toggle()
-    {:ok, %{tick: 1, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
+    {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
   def handle_call(:do_tick, _from, %{score: score, current_score: current_score, pending_score: pending_score, pending_fill: pending_fill, tick: tick} = state) do
@@ -45,7 +45,9 @@ defmodule Beats.Conductor do
       Beats.Display.set_progress(measure, div(sixteenth, 4))
     end
 
-    Beats.Display.draw_beat(tick - 1, false)
+    if tick > 0 do
+      Beats.Display.draw_beat(tick - 1, false)
+    end
     Beats.Display.draw_beat(tick, true)
 
     cond do
@@ -53,7 +55,7 @@ defmodule Beats.Conductor do
         # New score coming our way
         Beats.Metronome.set_bpm(pending_score.desired_bpm)
         Beats.Display.set_score(pending_score)
-        {:reply, tick, %{tick: tick + 1, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
+        {:reply, tick, %{tick: 0, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
       sixteenth == 15 && pending_fill ->
         # Fill request enqueued
         {:reply, tick, %{tick: tick + 1, score: pending_fill, current_score: current_score, pending_score: nil, pending_fill: nil}}
