@@ -41,15 +41,10 @@ defmodule Beats.Conductor do
     |> Enum.filter(& &1)
     |> Beats.Output.play()
 
-    if rem(sixteenth, 4) == 0 do
-      Beats.Display.set_progress(measure, div(sixteenth, 4))
-    end
+    # Update the display
+    Beats.Display.set_tick(tick)
 
-    if tick > 0 do
-      Beats.Display.draw_beat(tick - 1, false)
-    end
-    Beats.Display.draw_beat(tick, true)
-
+    # Update our state according to whether we're at the end of a measure or not
     cond do
       sixteenth == 15 && pending_score ->
         # New score coming our way
@@ -74,6 +69,7 @@ defmodule Beats.Conductor do
 
   def handle_call({:play_fill, num}, _from, %{current_score: %{fills: fills}} = state) do
     if length(fills) >= num do
+      Beats.Display.puts("Playing fill #{num}")
       {:reply, :ok, %{state | pending_fill: Enum.at(fills, num - 1)}}
     else
       Beats.Display.puts("Fill #{num} not defined")

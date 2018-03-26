@@ -1,5 +1,5 @@
 defmodule Beats.Score do
-  defstruct name: nil, desired_bpm: 120, parts: [Beats.Part], fills: [Beats.Score]
+  defstruct name: nil, desired_bpm: 120, parts: [], fills: []
 
   def default_score do
     score_from_file("/Users/mat/Code/beats/scores/default.json")
