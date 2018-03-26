@@ -1,0 +1,36 @@
+{
+  "name": "amen",
+  "bpm": 120,
+  "parts": [
+    {"name": "BD", "voice": 36, "pattern": "X X       XX    X X       XX    X X       X       XX      X     "},
+    {"name": "SD", "voice": 38, "pattern": "    X  X X  X  X    X  X X  X  X    X  X X    X  X  X  X X    X "},
+    {"name": "RS", "voice": 51, "pattern": "x x x x x x x x x x x x x x x x x x x x x X x x x x x x x   x x "},
+    {"name": "CS", "voice": 52, "pattern": "                                                          X     "}
+  ],
+  "fills": [
+    {
+      "name": "bass",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "X X X X X X X X "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "                "},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 42, "pattern": "                "},
+        {"name": "OH", "voice": 46, "pattern": "                "}
+      ]
+    },
+    {
+      "name": "snare",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "                "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "Xx"},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 42, "pattern": "                "},
+        {"name": "OH", "voice": 46, "pattern": "                "}
+      ]
+    }
+  ]
+}
