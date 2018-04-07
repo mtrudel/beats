@@ -56,16 +56,18 @@ defmodule Beats.Display do
   def init(_arg) do
     GenServer.cast(__MODULE__, :setup)
     SchedEx.run_in(__MODULE__, :handle_input, [], 50, repeat: true)
-    {:ok, %{
-      bpm_goal: 0,
-      bpm_actual: 0.0,
-      bpm_error: 0.0,
-      tick: 0,
-      playing: false,
-      console: nil,
-      score: %Beats.Score{},
-      pattern: [[]]
-    }}
+
+    {:ok,
+     %{
+       bpm_goal: 0,
+       bpm_actual: 0.0,
+       bpm_error: 0.0,
+       tick: 0,
+       playing: false,
+       console: nil,
+       score: %Beats.Score{},
+       pattern: [[]]
+     }}
   end
 
   def handle_cast(:setup, state) do
@@ -120,7 +122,7 @@ defmodule Beats.Display do
   end
 
   # Score display
-  
+
   def handle_call({:set_score, %Beats.Score{} = score}, _from, state) do
     pattern = pattern_from_score(score)
     display_grid(score, pattern)
@@ -171,14 +173,14 @@ defmodule Beats.Display do
       ExNcurses.refresh()
     end
   end
-  
+
   defp display_playing(playing) do
     lines = ExNcurses.lines()
     message = if playing, do: "PLAYING", else: "STOPPED"
     ExNcurses.mvprintw(lines - 4, 2, message)
     ExNcurses.refresh()
   end
-  
+
   defp display_console(string) do
     lines = ExNcurses.lines()
     ExNcurses.mvprintw(lines - 2, 2, "                        ")
@@ -189,16 +191,17 @@ defmodule Beats.Display do
   defp display_grid(%Beats.Score{parts: parts}, pattern) do
     # Clear the ground
     for line <- 9..(12 * 3),
-        col <- 2..(6 + (32 * 4)) do
+        col <- 2..(6 + 32 * 4) do
       ExNcurses.mvprintw(line, col, " ")
     end
 
     parts
     |> Enum.with_index()
-    |> Enum.each(fn({%Beats.Part{name: name}, index}) -> 
+    |> Enum.each(fn {%Beats.Part{name: name}, index} ->
       ExNcurses.attron(1)
-      ExNcurses.mvprintw(9 + (3 * index), 3, name)
+      ExNcurses.mvprintw(9 + 3 * index, 3, name)
     end)
+
     ExNcurses.attron(1)
     ExNcurses.refresh()
 
@@ -209,18 +212,21 @@ defmodule Beats.Display do
 
   defp display_grid_column(column, pattern, highlighted) do
     column = rem(16 + column, length(pattern))
+
     pattern
     |> Enum.at(column)
     |> Enum.with_index()
-    |> Enum.each(fn({to_draw, index}) -> 
-      cond do 
+    |> Enum.each(fn {to_draw, index} ->
+      cond do
         to_draw != 0 && highlighted -> ExNcurses.attron(4)
         to_draw != 0 -> ExNcurses.attron(5)
         true -> ExNcurses.attron(3)
       end
-      ExNcurses.mvprintw(9 + (3 * index), 6 + (4 * column), "   ")
-      ExNcurses.mvprintw(10 + (3 * index), 6 + (4 * column), "   ")
+
+      ExNcurses.mvprintw(9 + 3 * index, 6 + 4 * column, "   ")
+      ExNcurses.mvprintw(10 + 3 * index, 6 + 4 * column, "   ")
     end)
+
     ExNcurses.attron(1)
     ExNcurses.refresh()
   end
@@ -248,19 +254,22 @@ defmodule Beats.Display do
 
   def handle_input do
     case ExNcurses.getch() do
-      -1 -> nil
-      ch -> case List.to_string([ch]) do
-        "1" -> Beats.Conductor.play_fill(1)
-        "2" -> Beats.Conductor.play_fill(2)
-        "3" -> Beats.Conductor.play_fill(3)
-        "4" -> Beats.Conductor.play_fill(4)
-        "u" -> Beats.Metronome.speed_up()
-        "d" -> Beats.Metronome.slow_down()
-        " " -> Beats.Metronome.toggle()
-        "r" -> rebuild_display()
-        "q" -> System.halt()
-        _ -> nil
-      end
+      -1 ->
+        nil
+
+      ch ->
+        case List.to_string([ch]) do
+          "1" -> Beats.Conductor.play_fill(1)
+          "2" -> Beats.Conductor.play_fill(2)
+          "3" -> Beats.Conductor.play_fill(3)
+          "4" -> Beats.Conductor.play_fill(4)
+          "u" -> Beats.Metronome.speed_up()
+          "d" -> Beats.Metronome.slow_down()
+          " " -> Beats.Metronome.toggle()
+          "r" -> rebuild_display()
+          "q" -> System.halt()
+          _ -> nil
+        end
     end
   end
 
@@ -270,15 +279,17 @@ defmodule Beats.Display do
   end
 
   # Pattern / Score helpers
-  
+
   defp pattern_from_score(%Beats.Score{parts: parts}) do
-    longest_pattern = parts
-                      |> Enum.map(&(length(&1.pattern)))
-                      |> Enum.max()
-    0..(longest_pattern - 1)
-    |> Enum.map(fn(column) ->
+    longest_pattern =
       parts
-      |> Enum.map(fn(%Beats.Part{pattern: pattern}) -> 
+      |> Enum.map(&length(&1.pattern))
+      |> Enum.max()
+
+    0..(longest_pattern - 1)
+    |> Enum.map(fn column ->
+      parts
+      |> Enum.map(fn %Beats.Part{pattern: pattern} ->
         Enum.at(pattern, rem(column, length(pattern)))
       end)
     end)
