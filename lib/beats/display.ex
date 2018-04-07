@@ -49,6 +49,12 @@ defmodule Beats.Display do
     end
   end
 
+  def update_stats(stats) do
+    if GenServer.whereis(__MODULE__) do
+      GenServer.call(__MODULE__, {:update_stats, stats})
+    end
+  end
+
   # Server API
 
   # Basic setup & screen maintenance
@@ -129,6 +135,26 @@ defmodule Beats.Display do
     {:reply, :ok, %{state | score: score, pattern: pattern}}
   end
 
+  # Stats display
+
+  def handle_call(
+        {:update_stats,
+         %SchedEx.Stats{
+           scheduling_delay: %SchedEx.Stats.Value{
+             min: min,
+             max: max,
+             avg: avg,
+             count: count,
+             histogram: histogram
+           }
+         }},
+        _from,
+        state
+      ) do
+    display_stats(min, max, avg, count, histogram)
+    {:reply, :ok, state}
+  end
+
   # Curses lifecycle
 
   defp initialize_curses do
@@ -140,6 +166,7 @@ defmodule Beats.Display do
     ExNcurses.init_pair(3, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLACK))
     ExNcurses.init_pair(4, ExNcurses.clr(:WHITE), ExNcurses.clr(:RED))
     ExNcurses.init_pair(5, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLUE))
+    ExNcurses.init_pair(6, ExNcurses.clr(:BLACK), ExNcurses.clr(:WHITE))
     ExNcurses.attron(1)
   end
 
@@ -228,6 +255,29 @@ defmodule Beats.Display do
     end)
 
     ExNcurses.attron(1)
+    ExNcurses.refresh()
+  end
+
+  defp display_stats(min, max, avg, count, histogram) do
+    lines = ExNcurses.lines()
+    cols = ExNcurses.cols()
+    ExNcurses.mvprintw(lines - 18, cols - 22, "SchedEx Stats")
+
+    histogram
+    |> Enum.with_index()
+    |> Enum.each(fn {bucket, x} ->
+      height = round(10 * (bucket / count))
+      for y <- 0..9 do
+        if y < height, do: ExNcurses.attron(6), else: ExNcurses.attron(3)
+        ExNcurses.mvprintw(lines - 7 - y, cols - 25 + (2 * x), "  ")
+      end
+    end)
+
+    ExNcurses.attron(1)
+    ExNcurses.mvprintw(lines - 5, cols - 20, "Min: #{min}us     ")
+    ExNcurses.mvprintw(lines - 4, cols - 20, "Max: #{max}us     ")
+    ExNcurses.mvprintw(lines - 3, cols - 20, "Avg: #{trunc(avg)}us     ")
+    ExNcurses.mvprintw(lines - 2, cols - 22, "Calls: #{count}     ")
     ExNcurses.refresh()
   end
 

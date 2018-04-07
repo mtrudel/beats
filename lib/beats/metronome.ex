@@ -34,8 +34,9 @@ defmodule Beats.Metronome do
     {:ok, %{timer_pid: nil}}
   end
 
-  def handle_cast(:do_tick, state) do
+  def handle_cast(:do_tick, %{timer_pid: timer_pid} = state) do
     Beats.Conductor.do_tick()
+    timer_pid |> SchedEx.stats() |> Beats.Display.update_stats()
     {:noreply, state}
   end
 
