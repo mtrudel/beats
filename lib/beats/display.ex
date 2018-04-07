@@ -161,12 +161,12 @@ defmodule Beats.Display do
     ExNcurses.n_begin()
     ExNcurses.noecho()
     ExNcurses.start_color()
-    ExNcurses.init_pair(1, ExNcurses.clr(:WHITE), ExNcurses.clr(:CYAN))
-    ExNcurses.init_pair(2, ExNcurses.clr(:MAGENTA), ExNcurses.clr(:CYAN))
-    ExNcurses.init_pair(3, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLACK))
-    ExNcurses.init_pair(4, ExNcurses.clr(:WHITE), ExNcurses.clr(:RED))
-    ExNcurses.init_pair(5, ExNcurses.clr(:WHITE), ExNcurses.clr(:BLUE))
-    ExNcurses.init_pair(6, ExNcurses.clr(:BLACK), ExNcurses.clr(:WHITE))
+    ExNcurses.init_pair(1, :white, :cyan)
+    ExNcurses.init_pair(2, :magenta, :cyan)
+    ExNcurses.init_pair(3, :white, :black)
+    ExNcurses.init_pair(4, :white, :red)
+    ExNcurses.init_pair(5, :white, :blue)
+    ExNcurses.init_pair(6, :black, :white)
     ExNcurses.attron(1)
   end
 
