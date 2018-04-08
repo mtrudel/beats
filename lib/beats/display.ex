@@ -217,7 +217,7 @@ defmodule Beats.Display do
 
   defp display_grid(%Beats.Score{parts: parts}, pattern) do
     # Clear the ground
-    for line <- 9..(ExNcurses.lines() - 6), col <- 2..(ExNcurses.cols() - 36) do
+    for line <- 7..(ExNcurses.lines() - 6), col <- 2..(ExNcurses.cols() - 36) do
       ExNcurses.mvprintw(line, col, " ")
     end
 
@@ -225,7 +225,7 @@ defmodule Beats.Display do
     |> Enum.with_index()
     |> Enum.each(fn {%Beats.Part{name: name}, index} ->
       ExNcurses.attron(1)
-      ExNcurses.mvprintw(9 + 2 * index, 3, name)
+      ExNcurses.mvprintw(7 + 2 * index, 3, name)
     end)
 
     ExNcurses.attron(1)
@@ -253,7 +253,7 @@ defmodule Beats.Display do
         true -> ExNcurses.attron(3)
       end
 
-      ExNcurses.mvprintw(9 + 2 * index, 6 + column_width * column, String.duplicate(" ", column_width - 1))
+      ExNcurses.mvprintw(7 + 2 * index, 6 + column_width * column, String.duplicate(" ", column_width - 1))
     end)
 
     ExNcurses.attron(1)
