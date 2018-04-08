@@ -8,51 +8,35 @@ defmodule Beats.Display do
   end
 
   def puts(string) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:puts, string})
-    end
+    GenServer.call(__MODULE__, {:puts, string})
   end
 
   def set_bpm_goal(bpm) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_bpm_goal, bpm})
-    end
+    GenServer.call(__MODULE__, {:set_bpm_goal, bpm})
   end
 
   def set_bpm_actual(bpm) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_bpm_actual, bpm})
-    end
+    GenServer.call(__MODULE__, {:set_bpm_actual, bpm})
   end
 
   def set_bpm_error(error) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_bpm_error, error})
-    end
+    GenServer.call(__MODULE__, {:set_bpm_error, error})
   end
 
   def set_playing(playing) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_playing, playing})
-    end
+    GenServer.call(__MODULE__, {:set_playing, playing})
   end
 
   def set_tick(tick) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_tick, tick})
-    end
+    GenServer.call(__MODULE__, {:set_tick, tick})
   end
 
   def set_score(score) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:set_score, score})
-    end
+    GenServer.call(__MODULE__, {:set_score, score})
   end
 
   def update_stats(stats) do
-    if GenServer.whereis(__MODULE__) do
-      GenServer.call(__MODULE__, {:update_stats, stats})
-    end
+    GenServer.call(__MODULE__, {:update_stats, stats})
   end
 
   # Server API
