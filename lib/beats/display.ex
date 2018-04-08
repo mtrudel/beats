@@ -222,7 +222,7 @@ defmodule Beats.Display do
   end
 
   defp display_grid_column(column, pattern, highlighted) do
-    column = rem(16 + column, length(pattern))
+    column = rem(length(pattern) + column, length(pattern))
     column_width = (ExNcurses.cols() - 44) / length(pattern)
                    |> trunc()
                    |> max(2)
