@@ -24,7 +24,7 @@ defmodule Beats.MixProject do
       {:poison, "~> 3.1"},
       {:portmidi, git: "https://github.com/mtrudel/ex-portmidi"},
       {:sched_ex, "~> 0.7.0"},
-      {:ex_ncurses, git: "https://github.com/jfreeze/ex_ncurses.git"},
+      {:ex_ncurses, git: "https://github.com/mtrudel/ex_ncurses.git"},
       {:distillery, "~> 1.4", runtime: false}
     ]
   end

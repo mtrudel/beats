@@ -167,6 +167,7 @@ defmodule Beats.Display do
     ExNcurses.init_pair(4, :white, :red)
     ExNcurses.init_pair(5, :white, :blue)
     ExNcurses.init_pair(6, :black, :white)
+    ExNcurses.init_pair(7, :red, :cyan)
     ExNcurses.attron(1)
   end
 
@@ -263,7 +264,14 @@ defmodule Beats.Display do
   defp display_stats(min, max, avg, count, histogram) do
     lines = ExNcurses.lines()
     cols = ExNcurses.cols()
-    ExNcurses.mvprintw(lines - 18, cols - 22, "SchedEx Stats")
+    ExNcurses.attron(:bold)
+    ExNcurses.attron(2)
+    ExNcurses.mvprintw(lines - 18, cols - 22, "Sched")
+    ExNcurses.attron(7)
+    ExNcurses.mvprintw(lines - 18, cols - 17, "Ex")
+    ExNcurses.attron(1)
+    ExNcurses.mvprintw(lines - 18, cols - 14, "Stats")
+    ExNcurses.attroff(:bold)
 
     histogram
     |> Enum.with_index()
@@ -292,13 +300,15 @@ defmodule Beats.Display do
       ExNcurses.mvprintw(line, col, " ")
     end
 
-    ExNcurses.attron(2)
+    ExNcurses.attron(:bold)
+    ExNcurses.attron(7)
     ExNcurses.mvprintw(1, cols - 38, ~S( ___.                  __           ))
     ExNcurses.mvprintw(2, cols - 38, ~S( \_ |__   ____ _____ _/  |_  ______ ))
     ExNcurses.mvprintw(3, cols - 38, ~S(  | __ \_/ __ \\__  \\   __\/  ___/ ))
     ExNcurses.mvprintw(4, cols - 38, ~S(  | \_\ \  ___/ / __ \|  |  \___ \  ))
     ExNcurses.mvprintw(5, cols - 38, ~S(  |___  /\___  >____  /__| /____  > ))
     ExNcurses.mvprintw(6, cols - 38, ~S(      \/     \/     \/          \/  ))
+    ExNcurses.attroff(:bold)
     ExNcurses.attron(1)
   end
 
