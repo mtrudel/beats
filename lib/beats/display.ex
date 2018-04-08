@@ -250,11 +250,11 @@ defmodule Beats.Display do
     cols = ExNcurses.cols()
     ExNcurses.attron(:bold)
     ExNcurses.attron(2)
-    ExNcurses.mvprintw(lines - 18, cols - 22, "Sched")
+    ExNcurses.mvprintw(lines - 19, cols - 22, "Sched")
     ExNcurses.attron(7)
-    ExNcurses.mvprintw(lines - 18, cols - 17, "Ex")
+    ExNcurses.mvprintw(lines - 19, cols - 17, "Ex")
     ExNcurses.attron(1)
-    ExNcurses.mvprintw(lines - 18, cols - 14, "Stats")
+    ExNcurses.mvprintw(lines - 19, cols - 14, "Stats")
     ExNcurses.attroff(:bold)
 
     histogram
@@ -263,11 +263,12 @@ defmodule Beats.Display do
       height = round(10 * (bucket / count))
       for y <- 0..9 do
         if y < height, do: ExNcurses.attron(6), else: ExNcurses.attron(3)
-        ExNcurses.mvprintw(lines - 7 - y, cols - 25 + (2 * x), "  ")
+        ExNcurses.mvprintw(lines - 8 - y, cols - 25 + (2 * x), "  ")
       end
     end)
 
     ExNcurses.attron(1)
+    ExNcurses.mvprintw(lines - 7, cols - 25, "0us           1000us")
     ExNcurses.mvprintw(lines - 5, cols - 20, "Min: #{min}us     ")
     ExNcurses.mvprintw(lines - 4, cols - 20, "Max: #{max}us     ")
     ExNcurses.mvprintw(lines - 3, cols - 20, "Avg: #{trunc(avg)}us     ")
