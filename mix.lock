@@ -14,7 +14,7 @@
   "parse_trans": {:hex, :parse_trans, "3.2.0", "2adfa4daf80c14dc36f522cf190eb5c4ee3e28008fc6394397c16f62a26258c2", [:rebar3], [], "hexpm"},
   "poison": {:hex, :poison, "3.1.0", "d9eb636610e096f86f25d9a46f35a9facac35609a7591b3be3326e99a0484665", [:mix], [], "hexpm"},
   "portmidi": {:git, "https://github.com/mtrudel/ex-portmidi", "93361de408c1bf06ce1a369e74b3f53d8a003ecf", []},
-  "sched_ex": {:hex, :sched_ex, "0.7.4", "6be605d9b010d1a0506744f595dbbb6272f7172b7ee9fb22bd9b20ff61c3d576", [:mix], [{:crontab, "~> 1.1.2", [hex: :crontab, repo: "hexpm", optional: false]}, {:timex, "~> 3.1", [hex: :timex, repo: "hexpm", optional: false]}], "hexpm"},
+  "sched_ex": {:hex, :sched_ex, "0.7.6", "2babd2b4721a0955b3b60a9591c11b7dfae4ee2d62aa15725bf927b3f2e1b089", [:mix], [{:crontab, "~> 1.1.2", [hex: :crontab, repo: "hexpm", optional: false]}, {:timex, "~> 3.1", [hex: :timex, repo: "hexpm", optional: false]}], "hexpm"},
   "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.1", "28a4d65b7f59893bc2c7de786dec1e1555bd742d336043fe644ae956c3497fbe", [:make, :rebar], [], "hexpm"},
   "timex": {:hex, :timex, "3.2.1", "639975eac45c4c08c2dbf7fc53033c313ff1f94fad9282af03619a3826493612", [:mix], [{:combine, "~> 0.10", [hex: :combine, repo: "hexpm", optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, repo: "hexpm", optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, repo: "hexpm", optional: false]}], "hexpm"},
   "tzdata": {:hex, :tzdata, "0.5.16", "13424d3afc76c68ff607f2df966c0ab4f3258859bbe3c979c9ed1606135e7352", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, repo: "hexpm", optional: false]}], "hexpm"},
