@@ -174,17 +174,18 @@ defmodule Beats.Display do
   # Display methods
 
   defp display_bpm_goal(bpm_goal) do
-    ExNcurses.mvprintw(2, 2, "Target BPM: #{bpm_goal}   ")
+    ExNcurses.mvprintw(2, 4, "Target BPM: #{bpm_goal}   ")
     ExNcurses.refresh()
   end
 
   defp display_bpm_actual(bpm_actual) do
-    ExNcurses.mvprintw(3, 2, "Actual BPM: #{Float.round(bpm_actual, 2)}   ")
+    ms_per_16th = if bpm_actual != 0, do: trunc(1000 / (bpm_actual / 60)), else: 0
+    ExNcurses.mvprintw(3, 4, "Actual BPM: #{Float.round(bpm_actual, 2)} (#{ms_per_16th}ms)   ")
     ExNcurses.refresh()
   end
 
   defp display_bpm_error(error) do
-    ExNcurses.mvprintw(4, 2, "     Error: #{abs(Float.round(error, 2))}%%   ")
+    ExNcurses.mvprintw(4, 4, "     Error: #{abs(Float.round(error, 2))}%%   ")
     ExNcurses.refresh()
   end
 
