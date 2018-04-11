@@ -20,7 +20,7 @@ defmodule Beats.TempoAgent do
   end
 
   def ms_per_tick() do
-    GenServer.call(__MODULE__, :speedup)
+    GenServer.call(__MODULE__, :ms_per_tick)
   end
 
   # Server API
@@ -45,7 +45,7 @@ defmodule Beats.TempoAgent do
     {:reply, bpm, %{state | bpm: bpm}}
   end
 
-  def handle_call(:speedup, _from, %{bpm: bpm} = state) do
+  def handle_call(:ms_per_tick, _from, %{bpm: bpm} = state) do
     {:reply, ms_per_16th(bpm), state}
   end
 
