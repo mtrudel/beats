@@ -1,21 +1,11 @@
 # Beats
 
-**TODO: Add description**
+Beats is a simple ncurses based drum machine that serves as a demo for the [SchedEx](https://github.com/SchedEx/SchedEx)
+library.
 
-## Installation
+More info coming late April 2018.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `beats` to your list of dependencies in `mix.exs`:
+# License
 
-```elixir
-def deps do
-  [
-    {:beats, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/beats](https://hexdocs.pm/beats).
+MIT
 
