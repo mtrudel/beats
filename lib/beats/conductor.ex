@@ -53,9 +53,11 @@ defmodule Beats.Conductor do
         {:reply, tick, %{tick: 0, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
       sixteenth == 15 && pending_fill ->
         # Fill request enqueued
+        Beats.Display.set_score(pending_fill)
         {:reply, tick, %{tick: tick + 1, score: pending_fill, current_score: current_score, pending_score: nil, pending_fill: nil}}
       sixteenth == 15 && score != current_score ->
         # Restoring after a fill
+        Beats.Display.set_score(current_score)
         {:reply, tick, %{tick: tick + 1, score: current_score, current_score: current_score, pending_score: nil, pending_fill: nil}}
       true ->
         {:reply, tick, %{state | tick: tick + 1}}
