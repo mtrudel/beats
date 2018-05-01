@@ -2,34 +2,28 @@
   "name": "amen",
   "bpm": 120,
   "parts": [
-    {"name": "BD", "voice": 36, "pattern": "X X       XX    X X       XX    X X       X       XX      X     "},
-    {"name": "SD", "voice": 38, "pattern": "    X  X X  X  X    X  X X  X  X    X  X X    X  X  X  X X    X "},
-    {"name": "RS", "voice": 51, "pattern": "x x x x x x x x x x x x x x x x x x x x x X x x x x x x x   x x "},
-    {"name": "CS", "voice": 52, "pattern": "                                                          X     "}
+    {"name": "BD", "voice": 36, "pattern": "X X       XX    "},
+    {"name": "SD", "voice": 38, "pattern": "    X  X X  X  X"},
+    {"name": "RS", "voice": 51, "pattern": "x x x x x x x x "},
+    {"name": "CS", "voice": 52, "pattern": "                "}
   ],
   "fills": [
     {
-      "name": "bass",
+      "name": "variation 1",
       "parts": [
-        {"name": "BD", "voice": 36, "pattern": "X X X X X X X X "},
-        {"name": "HC", "voice": 39, "pattern": "                "},
-        {"name": "SD", "voice": 38, "pattern": "                "},
-        {"name": "SS", "voice": 37, "pattern": "                "},
-        {"name": "SD", "voice": 40, "pattern": "                "},
-        {"name": "CH", "voice": 42, "pattern": "                "},
-        {"name": "OH", "voice": 46, "pattern": "                "}
+        {"name": "BD", "voice": 36, "pattern": "X X       X     "},
+        {"name": "SD", "voice": 38, "pattern": "    X  X X    X "},
+        {"name": "RS", "voice": 51, "pattern": "x x x x x X x x "},
+        {"name": "CS", "voice": 52, "pattern": "                "}
       ]
     },
     {
-      "name": "snare",
+      "name": "variation 2",
       "parts": [
-        {"name": "BD", "voice": 36, "pattern": "                "},
-        {"name": "HC", "voice": 39, "pattern": "                "},
-        {"name": "SD", "voice": 38, "pattern": "Xx"},
-        {"name": "SS", "voice": 37, "pattern": "                "},
-        {"name": "SD", "voice": 40, "pattern": "                "},
-        {"name": "CH", "voice": 42, "pattern": "                "},
-        {"name": "OH", "voice": 46, "pattern": "                "}
+        {"name": "BD", "voice": 36, "pattern": "  XX      X     "},
+        {"name": "SD", "voice": 38, "pattern": " X  X  X X    X "},
+        {"name": "RS", "voice": 51, "pattern": "x x x x x   x x "},
+        {"name": "CS", "voice": 52, "pattern": "          X     "}
       ]
     }
   ]
