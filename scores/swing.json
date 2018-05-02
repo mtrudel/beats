@@ -1,0 +1,24 @@
+{
+  "name": "swing",
+  "bpm": 90,
+  "swing": 0.66,
+  "parts": [
+    {"name": "BD", "voice": 36, "pattern": "X   "},
+    {"name": "SD", "voice": 38, "pattern": "   X"},
+    {"name": "CH", "voice": 42, "pattern": "XXXX"}
+  ],
+  "fills": [
+    {
+      "name": "bass",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "XXXX"}
+      ]
+    },
+    {
+      "name": "snare",
+      "parts": [
+        {"name": "SD", "voice": 38, "pattern": "Xx"}
+      ]
+    }
+  ]
+}

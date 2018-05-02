@@ -26,6 +26,7 @@ defmodule Beats.Conductor do
     score = Beats.Score.default_score()
     Beats.Display.set_score(score)
     Beats.Metronome.set_bpm(score.desired_bpm)
+    Beats.Metronome.set_swing(score.swing)
     Beats.Metronome.toggle()
     {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
@@ -48,8 +49,9 @@ defmodule Beats.Conductor do
     cond do
       sixteenth == 15 && pending_score ->
         # New score coming our way
-        Beats.Metronome.set_bpm(pending_score.desired_bpm)
         Beats.Display.set_score(pending_score)
+        Beats.Metronome.set_bpm(pending_score.desired_bpm)
+        Beats.Metronome.set_swing(pending_score.swing)
         {:reply, tick, %{tick: 0, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
       sixteenth == 15 && pending_fill ->
         # Fill request enqueued

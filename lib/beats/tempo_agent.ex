@@ -19,6 +19,22 @@ defmodule Beats.TempoAgent do
     GenServer.call(__MODULE__, {:set_bpm, bpm})
   end
 
+  def set_tick(tick) do
+    GenServer.call(__MODULE__, {:set_tick, tick})
+  end
+
+  def swing_less(by \\ 0.01) do
+    GenServer.call(__MODULE__, {:adjust_swing, -by})
+  end
+
+  def swing_more(by \\ 0.01) do
+    GenServer.call(__MODULE__, {:adjust_swing, by})
+  end
+
+  def set_swing(swing) do
+    GenServer.call(__MODULE__, {:set_swing, swing})
+  end
+
   def ms_per_tick() do
     GenServer.call(__MODULE__, :ms_per_tick)
   end
@@ -26,7 +42,7 @@ defmodule Beats.TempoAgent do
   # Server API
 
   def init(_) do
-    {:ok, %{bpm: 0}}
+    {:ok, %{bpm: 0, swing: 0.5, tick: 0}}
   end
 
   def handle_call({:adjust_bpm, by}, from, %{bpm: bpm} = state) do
@@ -45,8 +61,26 @@ defmodule Beats.TempoAgent do
     {:reply, bpm, %{state | bpm: bpm}}
   end
 
-  def handle_call(:ms_per_tick, _from, %{bpm: bpm} = state) do
-    {:reply, ms_per_16th(bpm), state}
+  def handle_call({:set_tick, tick}, _from, state) do
+    {:reply, :ok, %{state | tick: tick}}
+  end
+
+  def handle_call({:adjust_swing, by}, from, %{swing: swing} = state) do
+    handle_call({:set_swing, swing + by}, from, state)
+  end
+
+  def handle_call({:set_swing, swing}, _from, state) do
+    swing = min(max(swing, 0.0), 1.0)
+    Beats.Display.set_swing(swing)
+    {:reply, swing, %{state | swing: swing}}
+  end
+
+  def handle_call(:ms_per_tick, _from, %{bpm: bpm, swing: swing, tick: tick} = state) do
+    ms = case(rem(tick, 2)) do
+      0 -> 2 * swing * ms_per_16th(bpm)
+      1 -> (2 - (2 * swing)) * ms_per_16th(bpm)
+    end
+    {:reply, ms, state}
   end
 
   defp ms_per_16th(bpm) do

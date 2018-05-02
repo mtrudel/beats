@@ -23,6 +23,10 @@ defmodule Beats.Display do
     GenServer.call(__MODULE__, {:set_bpm_error, error})
   end
 
+  def set_swing(swing) do
+    GenServer.call(__MODULE__, {:set_swing, swing})
+  end
+
   def set_playing(playing) do
     GenServer.call(__MODULE__, {:set_playing, playing})
   end
@@ -56,6 +60,7 @@ defmodule Beats.Display do
        bpm_goal: 0,
        bpm_actual: 0.0,
        bpm_error: 0.0,
+       swing: 0.5,
        tick: 0,
        playing: false,
        console: nil,
@@ -71,6 +76,7 @@ defmodule Beats.Display do
     display_bpm_goal(state.bpm_goal)
     display_bpm_actual(state.bpm_actual)
     display_bpm_error(state.bpm_error)
+    display_swing(state.swing)
     display_grid(state.score, state.pattern)
     display_progress(state.tick)
     display_playing(state.playing)
@@ -93,6 +99,11 @@ defmodule Beats.Display do
   def handle_call({:set_bpm_error, error}, _from, state) do
     display_bpm_error(error)
     {:reply, :ok, %{state | bpm_error: error}}
+  end
+
+  def handle_call({:set_swing, swing}, _from, state) do
+    display_swing(swing)
+    {:reply, :ok, %{state | swing: swing}}
   end
 
   # Status display
@@ -174,18 +185,23 @@ defmodule Beats.Display do
   # Display methods
 
   defp display_bpm_goal(bpm_goal) do
-    ExNcurses.mvprintw(2, 4, "Target BPM: #{bpm_goal}   ")
+    ExNcurses.mvprintw(1, 4, "Target BPM: #{bpm_goal}   ")
     ExNcurses.refresh()
   end
 
   defp display_bpm_actual(bpm_actual) do
     ms_per_16th = if bpm_actual != 0, do: trunc(1000 / (bpm_actual / 60)), else: 0
-    ExNcurses.mvprintw(3, 4, "Actual BPM: #{Float.round(bpm_actual, 2)} (#{ms_per_16th}ms)   ")
+    ExNcurses.mvprintw(2, 4, "Actual BPM: #{Float.round(bpm_actual, 2)} (#{ms_per_16th}ms)   ")
     ExNcurses.refresh()
   end
 
   defp display_bpm_error(error) do
-    ExNcurses.mvprintw(4, 4, "     Error: #{abs(Float.round(error, 2))}%%   ")
+    ExNcurses.mvprintw(3, 4, "     Error: #{abs(Float.round(error, 2))}%   ")
+    ExNcurses.refresh()
+  end
+
+  defp display_swing(swing) do
+    ExNcurses.mvprintw(4, 4, "     Swing: #{round(100 * swing)}%   ")
     ExNcurses.refresh()
   end
 
@@ -333,6 +349,8 @@ defmodule Beats.Display do
           "u" -> Beats.Metronome.speed_up()
           "d" -> Beats.Metronome.slow_down()
           " " -> Beats.Metronome.toggle()
+          "w" -> Beats.Metronome.swing_less()
+          "e" -> Beats.Metronome.swing_more()
           "s" -> toggle_stats()
           "r" -> rebuild_display()
           "q" -> System.halt()

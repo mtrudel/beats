@@ -23,6 +23,18 @@ defmodule Beats.Metronome do
     Beats.TempoAgent.set_bpm(bpm)
   end
 
+  def swing_less(by \\ 0.01) do
+    Beats.TempoAgent.swing_less(by)
+  end
+
+  def swing_more(by \\ 0.01) do
+    Beats.TempoAgent.swing_more(by)
+  end
+
+  def set_swing(swing) do
+    Beats.TempoAgent.set_swing(swing)
+  end
+
   def toggle() do
     GenServer.cast(__MODULE__, :toggle)
   end
@@ -35,7 +47,7 @@ defmodule Beats.Metronome do
   end
 
   def handle_cast(:do_tick, %{timer_pid: timer_pid} = state) do
-    Beats.Conductor.do_tick()
+    Beats.Conductor.do_tick() |> Beats.TempoAgent.set_tick()
     timer_pid |> SchedEx.stats() |> Beats.Display.update_stats()
     {:noreply, state}
   end

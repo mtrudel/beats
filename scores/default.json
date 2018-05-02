@@ -7,7 +7,7 @@
     {"name": "SD", "voice": 38, "pattern": "    X       X   "},
     {"name": "SS", "voice": 37, "pattern": "                "},
     {"name": "SD", "voice": 40, "pattern": "                "},
-    {"name": "CH", "voice": 42, "pattern": "X X X X X X X X "},
+    {"name": "CH", "voice": 42, "pattern": "XX"},
     {"name": "OH", "voice": 46, "pattern": "                "}
   ],
   "fills": [

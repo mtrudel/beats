@@ -28,6 +28,16 @@ defmodule Beats.Knob do
     {:noreply, state}
   end
 
+  def handle_info({_pid, [{{_status, 17 = _channel, 0}, _timestamp} | _]}, state) do
+    Beats.Metronome.swing_less()
+    {:noreply, state}
+  end
+
+  def handle_info({_pid, [{{_status, 17 = _channel, 127}, _timestamp} | _]}, state) do
+    Beats.Metronome.swing_more()
+    {:noreply, state}
+  end
+
   def handle_info({_pid, [{{_status, 18 = _channel, 127}, _timestamp} | _]}, state) do
     Beats.Metronome.toggle()
     {:noreply, state}
