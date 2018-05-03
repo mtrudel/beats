@@ -7,8 +7,8 @@ defmodule Beats.Output do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
-  def play(notes) do
-    GenServer.call(__MODULE__, {:play, notes})
+  def play(notes, channel) do
+    GenServer.call(__MODULE__, {:play, notes, channel})
   end
 
   # Server API
@@ -18,10 +18,10 @@ defmodule Beats.Output do
     {:ok, %{output_pid: output_pid}}
   end
 
-  def handle_call({:play, notes}, _from, %{output_pid: output_pid} = state) do
+  def handle_call({:play, notes, channel}, _from, %{output_pid: output_pid} = state) do
     # Notes are {key, velocity} pairs and we assume them all to be 'note on'
     notes
-    |> Enum.map(fn {key, velocity} -> {0b10010000, key, velocity} end)
+    |> Enum.map(fn {key, velocity} -> {0b10010000 + (channel - 1), key, velocity} end)
     |> Enum.map(&PortMidi.write(output_pid, &1))
 
     {:reply, :ok, state}

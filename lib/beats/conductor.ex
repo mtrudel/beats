@@ -31,7 +31,7 @@ defmodule Beats.Conductor do
     {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
-  def handle_call(:do_tick, _from, %{score: score, current_score: current_score, pending_score: pending_score, pending_fill: pending_fill, tick: tick} = state) do
+  def handle_call(:do_tick, _from, %{score: score, current_score: %Beats.Score{channel: channel} = current_score, pending_score: pending_score, pending_fill: pending_fill, tick: tick} = state) do
     # Map the tick into a musical measure and direct everyone to play it
     measure = div(tick, 16)
     sixteenth = rem(tick, 16)
@@ -40,7 +40,7 @@ defmodule Beats.Conductor do
     score.parts
     |> Enum.map(&Beats.Part.note_for(&1, measure, sixteenth))
     |> Enum.filter(& &1)
-    |> Beats.Output.play()
+    |> Beats.Output.play(channel)
 
     # Update the display
     Beats.Display.set_tick(tick)
