@@ -210,7 +210,7 @@ defmodule Beats.Display do
       measure = div(tick, 16)
       beat = div(rem(tick, 16), 4)
       lines = ExNcurses.lines()
-      ExNcurses.mvprintw(lines - 4, 10, "Measure #{measure + 1}, Beat #{beat + 1}")
+      ExNcurses.mvprintw(lines - 4, 10, "Measure #{measure + 1}, Beat #{beat + 1}    ")
       ExNcurses.refresh()
     end
   end
