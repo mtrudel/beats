@@ -23,11 +23,7 @@ defmodule Beats.Conductor do
 
   def init(_arg) do
     Beats.FileWatcher.subscribe()
-    score = Beats.Score.default_score()
-    Beats.Display.set_score(score)
-    Beats.Metronome.set_bpm(score.desired_bpm)
-    Beats.Metronome.set_swing(score.swing)
-    Beats.Metronome.toggle()
+    score = Beats.Score.default_score() |> load_score()
     {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
@@ -49,9 +45,7 @@ defmodule Beats.Conductor do
     cond do
       sixteenth == 15 && pending_score ->
         # New score coming our way
-        Beats.Display.set_score(pending_score)
-        Beats.Metronome.set_bpm(pending_score.desired_bpm)
-        Beats.Metronome.set_swing(pending_score.swing)
+        load_score(pending_score)
         {:reply, tick, %{tick: 0, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
       sixteenth == 15 && pending_fill ->
         # Fill request enqueued
@@ -88,5 +82,12 @@ defmodule Beats.Conductor do
     else
       {:noreply, state}
     end
+  end
+
+  defp load_score(score) do
+    Beats.Display.set_score(score)
+    Beats.Metronome.set_bpm(score.desired_bpm)
+    Beats.Metronome.set_swing(score.swing)
+    score
   end
 end
