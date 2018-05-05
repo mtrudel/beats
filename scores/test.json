@@ -1,0 +1,55 @@
+{
+  "name": "test",
+  "bpm": 1000,
+  "parts": [
+    {"name": "  ", "voice": 36, "pattern": "                "}
+  ],
+  "fills": [
+    {
+      "name": "Bass Drum",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "X               "}
+      ]
+    },
+    {
+      "name": "Hand Clap",
+      "parts": [
+        {"name": "HC", "voice": 39, "pattern": "X               "}
+
+      ]
+    },
+    {
+      "name": "Snare Drum 1",
+      "parts": [
+        {"name": "SD", "voice": 38, "pattern": "X               "}
+
+      ]
+    },
+    {
+      "name": "Snare Drum 2",
+      "parts": [
+        {"name": "SD", "voice": 40, "pattern": "X               "}
+
+      ]
+    },
+    {
+      "name": "Side Stick",
+      "parts": [
+        {"name": "SS", "voice": 37, "pattern": "X               "}
+
+      ]
+    },
+    {
+      "name": "Closed Hat",
+      "parts": [
+        {"name": "CH", "voice": 42, "pattern": "X               "}
+      ]
+    },
+    {
+      "name": "Open Hat",
+      "parts": [
+        {"name": "OH", "voice": 46, "pattern": "X               "}
+      ]
+    }
+  ]
+}
