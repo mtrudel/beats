@@ -4,7 +4,7 @@
   "swing": 0.66,
   "channel": 2,
   "parts": [
-    {"name": "BD", "voice": 36, "pattern": "X   "},
+    {"name": "BD", "voice": 36, "pattern": "X   X   X   X   "},
     {"name": "SD", "voice": 38, "pattern": "   X"},
     {"name": "CH", "voice": 42, "pattern": "XXXX"}
   ],
