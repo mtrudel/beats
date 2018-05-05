@@ -77,6 +77,7 @@ defmodule Beats.Display do
     display_bpm_actual(state.bpm_actual)
     display_bpm_error(state.bpm_error)
     display_swing(state.swing)
+    display_name(state.score.name)
     display_grid(state.score, state.pattern)
     display_progress(state.tick)
     display_playing(state.playing)
@@ -129,7 +130,8 @@ defmodule Beats.Display do
 
   # Score display
 
-  def handle_call({:set_score, %Beats.Score{} = score}, _from, state) do
+  def handle_call({:set_score, %Beats.Score{name: name} = score}, _from, state) do
+    display_name(name)
     pattern = pattern_from_score(score)
     display_grid(score, pattern)
     {:reply, :ok, %{state | score: score, pattern: pattern}}
@@ -226,6 +228,18 @@ defmodule Beats.Display do
     lines = ExNcurses.lines()
     ExNcurses.mvprintw(lines - 2, 2, "                        ")
     ExNcurses.mvprintw(lines - 2, 2, string || "")
+    ExNcurses.refresh()
+  end
+
+  defp display_name(name) do
+    aesthetic_name = (name || "") 
+                     |> String.upcase()
+                     |> String.graphemes() 
+                     |> Enum.intersperse(" ") 
+                     |> Enum.join()
+    x = round((ExNcurses.cols() - String.length(aesthetic_name)) / 2)
+    ExNcurses.mvprintw(3, round(ExNcurses.cols() / 2) - 15, "                              ")
+    ExNcurses.mvprintw(3, x, aesthetic_name)
     ExNcurses.refresh()
   end
 
