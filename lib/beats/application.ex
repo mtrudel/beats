@@ -6,13 +6,17 @@ defmodule Beats.Application do
   use Application
 
   def start(_type, _args) do
+    # Parse arguments
+    {opts, _, _} = System.argv()
+                   |> OptionParser.parse(switches: [filename: :string])
+
     # List all child processes to be supervised
     children = [
       Beats.Display,
       Beats.Metronome,
       Beats.FileWatcher,
       Beats.Output,
-      Beats.Conductor,
+      {Beats.Conductor, opts},
       Beats.Knob
     ]
 

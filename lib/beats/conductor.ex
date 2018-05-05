@@ -21,9 +21,12 @@ defmodule Beats.Conductor do
 
   # Server API
 
-  def init(_arg) do
+  def init(arg) do
     Beats.FileWatcher.subscribe()
-    score = Beats.Score.default_score() |> load_score()
+    score = arg
+            |> Keyword.get(:filename, "default.json")
+            |> Beats.Score.score_from_file() 
+            |> load_score()
     {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
