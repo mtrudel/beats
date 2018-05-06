@@ -3,6 +3,7 @@ defmodule Beats.MixProject do
 
   def project do
     [
+      aliases: aliases(),
       app: :beats,
       version: "0.1.0",
       elixir: "~> 1.6",
@@ -15,6 +16,13 @@ defmodule Beats.MixProject do
     [
       extra_applications: [:logger, :portmidi, :ex_ncurses],
       mod: {Beats.Application, []}
+    ]
+  end
+
+  defp aliases do
+    [
+      s: "run --no-halt -e \"\" ",
+      t: "run --no-halt -e \"\" -- --filename test.json"
     ]
   end
 
