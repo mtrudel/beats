@@ -76,10 +76,12 @@ defmodule Beats.TempoAgent do
   end
 
   def handle_call(:ms_per_tick, _from, %{bpm: bpm, swing: swing, tick: tick} = state) do
-    ms = case(rem(tick, 2)) do
-      0 -> 2 * swing * ms_per_16th(bpm)
-      1 -> (2 - (2 * swing)) * ms_per_16th(bpm)
-    end
+    ms =
+      case rem(tick, 2) do
+        0 -> 2 * swing * ms_per_16th(bpm)
+        1 -> (2 - 2 * swing) * ms_per_16th(bpm)
+      end
+
     {:reply, ms, state}
   end
 

@@ -1,5 +1,4 @@
 defmodule Beats.FileWatcher do
-
   def start_link(_) do
     score_dir = Application.get_env(:beats, :score_dir)
     FileSystem.start_link(dirs: [score_dir], name: __MODULE__)
@@ -14,7 +13,6 @@ defmodule Beats.FileWatcher do
       shutdown: 500
     }
   end
-
 
   def subscribe do
     FileSystem.subscribe(__MODULE__)

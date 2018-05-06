@@ -2,7 +2,8 @@ defmodule Beats.Part do
   defstruct name: nil, voice: nil, pattern: []
 
   def note_for(%__MODULE__{voice: voice, pattern: pattern}, measure, sixteenth) do
-    index = rem((measure * 16) + sixteenth, length(pattern))
+    index = rem(measure * 16 + sixteenth, length(pattern))
+
     case Enum.at(pattern, index) do
       0 -> nil
       1 -> {voice, 64}
@@ -21,7 +22,7 @@ defmodule Beats.Part do
   defp pattern_from_string(string) do
     string
     |> String.graphemes()
-    |> Enum.map(fn(ch) ->
+    |> Enum.map(fn ch ->
       case ch do
         " " -> 0
         "x" -> 1

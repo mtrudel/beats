@@ -7,8 +7,9 @@ defmodule Beats.Application do
 
   def start(_type, _args) do
     # Parse arguments
-    {opts, _, _} = System.argv()
-                   |> OptionParser.parse(switches: [filename: :string])
+    {opts, _, _} =
+      System.argv()
+      |> OptionParser.parse(switches: [filename: :string])
 
     # List all child processes to be supervised
     children = [

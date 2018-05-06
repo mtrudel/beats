@@ -157,10 +157,12 @@ defmodule Beats.Display do
   end
 
   def handle_call(:toggle_stats, _from, %{stats_type: stats_type} = state) do
-    new_stats_type = case stats_type do
-      :scheduling_delay -> :quantization_error
-      :quantization_error -> :scheduling_delay
-    end
+    new_stats_type =
+      case stats_type do
+        :scheduling_delay -> :quantization_error
+        :quantization_error -> :scheduling_delay
+      end
+
     {:reply, :ok, %{state | stats_type: new_stats_type}}
   end
 
@@ -232,11 +234,13 @@ defmodule Beats.Display do
   end
 
   defp display_name(name) do
-    aesthetic_name = (name || "") 
-                     |> String.upcase()
-                     |> String.graphemes() 
-                     |> Enum.intersperse(" ") 
-                     |> Enum.join()
+    aesthetic_name =
+      (name || "")
+      |> String.upcase()
+      |> String.graphemes()
+      |> Enum.intersperse(" ")
+      |> Enum.join()
+
     x = round((ExNcurses.cols() - String.length(aesthetic_name)) / 2)
     ExNcurses.mvprintw(3, round(ExNcurses.cols() / 2) - 15, "                              ")
     ExNcurses.mvprintw(3, x, aesthetic_name)
@@ -245,7 +249,8 @@ defmodule Beats.Display do
 
   defp display_grid(%Beats.Score{parts: parts}, pattern) do
     # Clear the ground
-    for line <- 7..(ExNcurses.lines() - 6), col <- 2..(ExNcurses.cols() - 36) do
+    for line <- 7..(ExNcurses.lines() - 6),
+        col <- 2..(ExNcurses.cols() - 36) do
       ExNcurses.mvprintw(line, col, " ")
     end
 
@@ -266,10 +271,12 @@ defmodule Beats.Display do
 
   defp display_grid_column(column, pattern, highlighted) do
     column = rem(length(pattern) + column, length(pattern))
-    column_width = (ExNcurses.cols() - 44) / length(pattern)
-                   |> trunc()
-                   |> max(2)
-                   |> min(4)
+
+    column_width =
+      ((ExNcurses.cols() - 44) / length(pattern))
+      |> trunc()
+      |> max(2)
+      |> min(4)
 
     pattern
     |> Enum.at(column)
@@ -281,7 +288,11 @@ defmodule Beats.Display do
         true -> ExNcurses.attron(3)
       end
 
-      ExNcurses.mvprintw(7 + 2 * index, 6 + column_width * column, String.duplicate(" ", column_width - 1))
+      ExNcurses.mvprintw(
+        7 + 2 * index,
+        6 + column_width * column,
+        String.duplicate(" ", column_width - 1)
+      )
     end)
 
     ExNcurses.attron(1)
@@ -300,10 +311,12 @@ defmodule Beats.Display do
     ExNcurses.mvprintw(lines - 20, cols - 19, "Stats")
     ExNcurses.attroff(:bold)
 
-    type_string = case type do
-      :scheduling_delay -> "Scheduling Delay  "
-      :quantization_error -> "Quantization Error"
-    end
+    type_string =
+      case type do
+        :scheduling_delay -> "Scheduling Delay  "
+        :quantization_error -> "Quantization Error"
+      end
+
     ExNcurses.mvprintw(lines - 18, cols - 36, type_string)
 
     histogram
@@ -311,9 +324,10 @@ defmodule Beats.Display do
     |> Enum.with_index()
     |> Enum.each(fn {bucket, x} ->
       height = round(10 * (bucket / count))
+
       for y <- 0..9 do
         if y < height, do: ExNcurses.attron(6), else: ExNcurses.attron(3)
-        ExNcurses.mvprintw(lines - 8 - y, cols - 36 + (2 * x), "  ")
+        ExNcurses.mvprintw(lines - 8 - y, cols - 36 + 2 * x, "  ")
       end
     end)
 

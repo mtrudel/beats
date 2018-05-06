@@ -23,14 +23,27 @@ defmodule Beats.Conductor do
 
   def init(arg) do
     Beats.FileWatcher.subscribe()
-    score = arg
-            |> Keyword.get(:filename, "default.json")
-            |> Beats.Score.score_from_file() 
-            |> load_score()
+
+    score =
+      arg
+      |> Keyword.get(:filename, "default.json")
+      |> Beats.Score.score_from_file()
+      |> load_score()
+
     {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
   end
 
-  def handle_call(:do_tick, _from, %{score: score, current_score: %Beats.Score{channel: channel} = current_score, pending_score: pending_score, pending_fill: pending_fill, tick: tick} = state) do
+  def handle_call(
+        :do_tick,
+        _from,
+        %{
+          score: score,
+          current_score: %Beats.Score{channel: channel} = current_score,
+          pending_score: pending_score,
+          pending_fill: pending_fill,
+          tick: tick
+        } = state
+      ) do
     # Map the tick into a musical measure and direct everyone to play it
     measure = div(tick, 16)
     sixteenth = rem(tick, 16)
@@ -49,15 +62,42 @@ defmodule Beats.Conductor do
       sixteenth == 15 && pending_score ->
         # New score coming our way
         load_score(pending_score)
-        {:reply, tick, %{tick: 0, score: pending_score, current_score: pending_score, pending_score: nil, pending_fill: nil}}
+
+        {:reply, tick,
+         %{
+           tick: 0,
+           score: pending_score,
+           current_score: pending_score,
+           pending_score: nil,
+           pending_fill: nil
+         }}
+
       sixteenth == 15 && pending_fill ->
         # Fill request enqueued
         Beats.Display.set_score(pending_fill)
-        {:reply, tick, %{tick: tick + 1, score: pending_fill, current_score: current_score, pending_score: nil, pending_fill: nil}}
+
+        {:reply, tick,
+         %{
+           tick: tick + 1,
+           score: pending_fill,
+           current_score: current_score,
+           pending_score: nil,
+           pending_fill: nil
+         }}
+
       sixteenth == 15 && score != current_score ->
         # Restoring after a fill
         Beats.Display.set_score(current_score)
-        {:reply, tick, %{tick: tick + 1, score: current_score, current_score: current_score, pending_score: nil, pending_fill: nil}}
+
+        {:reply, tick,
+         %{
+           tick: tick + 1,
+           score: current_score,
+           current_score: current_score,
+           pending_score: nil,
+           pending_fill: nil
+         }}
+
       true ->
         {:reply, tick, %{state | tick: tick + 1}}
     end

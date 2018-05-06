@@ -7,9 +7,9 @@ defmodule Beats.Knob do
 
   def init(_arg) do
     if PortMidi.devices()
-    |> Map.get(:input)
-    |> Enum.map(&(&1.name))
-    |> Enum.member?("Teensy MIDI") do
+       |> Map.get(:input)
+       |> Enum.map(& &1.name)
+       |> Enum.member?("Teensy MIDI") do
       {:ok, midi_pid} = PortMidi.open(:input, "Teensy MIDI")
       PortMidi.listen(midi_pid, self())
       {:ok, %{midi_pid: midi_pid}}

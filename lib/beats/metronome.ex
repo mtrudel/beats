@@ -56,9 +56,13 @@ defmodule Beats.Metronome do
     case timer_pid do
       nil ->
         Beats.Display.set_playing(true)
-        {:ok, timer_pid} = SchedEx.run_in(__MODULE__, :do_tick, [], 1, repeat: true, time_scale: Beats.TempoAgent)
+
+        {:ok, timer_pid} =
+          SchedEx.run_in(__MODULE__, :do_tick, [], 1, repeat: true, time_scale: Beats.TempoAgent)
+
         {:noreply, %{state | timer_pid: timer_pid}}
-      _ -> 
+
+      _ ->
         Beats.Display.set_playing(false)
         SchedEx.cancel(timer_pid)
         {:noreply, %{state | timer_pid: nil}}

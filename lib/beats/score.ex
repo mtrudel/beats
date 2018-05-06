@@ -2,11 +2,12 @@ defmodule Beats.Score do
   defstruct name: nil, desired_bpm: 120, swing: 0.5, channel: 1, parts: [], fills: []
 
   def score_from_file(filename) do
-    filename = if Path.basename(filename) == filename do
-      Path.join(Application.get_env(:beats, :score_dir), filename)
-    else
-      filename
-    end
+    filename =
+      if Path.basename(filename) == filename do
+        Path.join(Application.get_env(:beats, :score_dir), filename)
+      else
+        filename
+      end
 
     with {:ok, body} <- File.read(filename),
          {:ok, json} <- Poison.decode(body) do
