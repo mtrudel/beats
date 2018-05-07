@@ -1,5 +1,6 @@
 {
   "name": "amen",
+  "channel": 2,
   "bpm": 120,
   "parts": [
     {"name": "BD", "voice": 36, "pattern": "X X       XX    "},

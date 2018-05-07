@@ -2,7 +2,7 @@
   "name": "swing",
   "bpm": 90,
   "swing": 0.66,
-  "channel": 2,
+  "channel": 3,
   "parts": [
     {"name": "BD", "voice": 36, "pattern": "X   X   X   X   "},
     {"name": "SD", "voice": 38, "pattern": "   X"},
