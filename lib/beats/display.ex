@@ -160,7 +160,8 @@ defmodule Beats.Display do
     new_stats_type =
       case stats_type do
         :scheduling_delay -> :quantization_error
-        :quantization_error -> :scheduling_delay
+        :quantization_error -> :execution_time
+        :execution_time -> :scheduling_delay
       end
 
     {:reply, :ok, %{state | stats_type: new_stats_type}}
@@ -315,6 +316,7 @@ defmodule Beats.Display do
       case type do
         :scheduling_delay -> "Scheduling Delay  "
         :quantization_error -> "Quantization Error"
+        :execution_time -> "Execution Time    "
       end
 
     ExNcurses.mvprintw(lines - 18, cols - 36, type_string)
