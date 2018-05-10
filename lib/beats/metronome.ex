@@ -8,7 +8,7 @@ defmodule Beats.Metronome do
   end
 
   def do_tick() do
-    GenServer.cast(__MODULE__, :do_tick)
+    GenServer.call(__MODULE__, :do_tick)
   end
 
   def slow_down(by \\ 2) do
@@ -46,9 +46,9 @@ defmodule Beats.Metronome do
     {:ok, %{timer_pid: nil}}
   end
 
-  def handle_cast(:do_tick, %{timer_pid: timer_pid} = state) do
+  def handle_call(:do_tick, _from, state) do
     Beats.Conductor.do_tick() |> Beats.TempoAgent.set_tick()
-    {:noreply, state}
+    {:reply, :ok, state}
   end
 
   def handle_cast(:toggle, %{timer_pid: timer_pid} = state) do
