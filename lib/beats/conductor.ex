@@ -19,6 +19,10 @@ defmodule Beats.Conductor do
     GenServer.call(__MODULE__, {:play_fill, num})
   end
 
+  def toggle_update_display do
+    GenServer.call(__MODULE__, :toggle_update_display)
+  end
+
   # Server API
 
   def init(arg) do
@@ -30,7 +34,15 @@ defmodule Beats.Conductor do
       |> Beats.Score.score_from_file()
       |> load_score()
 
-    {:ok, %{tick: 0, score: score, current_score: score, pending_score: nil, pending_fill: nil}}
+    {:ok,
+     %{
+       tick: 0,
+       score: score,
+       current_score: score,
+       pending_score: nil,
+       pending_fill: nil,
+       update_display: true
+     }}
   end
 
   def handle_call(
@@ -41,6 +53,7 @@ defmodule Beats.Conductor do
           current_score: %Beats.Score{channel: channel} = current_score,
           pending_score: pending_score,
           pending_fill: pending_fill,
+          update_display: update_display,
           tick: tick
         } = state
       ) do
@@ -54,8 +67,10 @@ defmodule Beats.Conductor do
     |> Enum.filter(& &1)
     |> Beats.Output.play(channel)
 
-    # Update the display
-    Beats.Display.set_tick(tick)
+    if (update_display) do
+      # Update the display
+      Beats.Display.set_tick(tick)
+    end
 
     # Update our state according to whether we're at the end of a measure or not
     cond do
@@ -116,6 +131,11 @@ defmodule Beats.Conductor do
       Beats.Display.puts("Fill #{num} not defined")
       {:reply, :no_such_fill, state}
     end
+  end
+
+  def handle_call(:toggle_update_display, _from, %{update_display: update_display} = state) do
+    Beats.Display.puts("Updating Display: #{!update_display}")
+    {:reply, :ok, %{state | update_display: !update_display}}
   end
 
   def handle_info({:file_event, _watcher_pid, {path, _events}}, state) do

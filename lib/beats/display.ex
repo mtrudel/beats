@@ -394,6 +394,7 @@ defmodule Beats.Display do
           " " -> Beats.Metronome.toggle()
           "w" -> Beats.Metronome.swing_less()
           "e" -> Beats.Metronome.swing_more()
+          "l" -> Beats.Conductor.toggle_update_display()
           "s" -> toggle_stats()
           "r" -> rebuild_display()
           "q" -> System.halt()
