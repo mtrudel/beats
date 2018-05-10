@@ -35,8 +35,8 @@ defmodule Beats.TempoAgent do
     GenServer.call(__MODULE__, {:set_swing, swing})
   end
 
-  def ms_per_tick() do
-    GenServer.call(__MODULE__, :ms_per_tick)
+  def speedup() do
+    GenServer.call(__MODULE__, :speedup)
   end
 
   # Server API
@@ -75,14 +75,14 @@ defmodule Beats.TempoAgent do
     {:reply, swing, %{state | swing: swing}}
   end
 
-  def handle_call(:ms_per_tick, _from, %{bpm: bpm, swing: swing, tick: tick} = state) do
-    ms =
+  def handle_call(:speedup, _from, %{bpm: bpm, swing: swing, tick: tick} = state) do
+    speedup =
       case rem(tick, 2) do
-        0 -> 2 * swing * ms_per_16th(bpm)
-        1 -> (2 - 2 * swing) * ms_per_16th(bpm)
+        0 -> 1 / (2 * swing * ms_per_16th(bpm))
+        1 -> 1 / ((2 - 2 * swing) * ms_per_16th(bpm))
       end
 
-    {:reply, ms, state}
+    {:reply, speedup, state}
   end
 
   defp ms_per_16th(bpm) do

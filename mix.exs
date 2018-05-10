@@ -31,7 +31,7 @@ defmodule Beats.MixProject do
       {:file_system, "~> 0.2"},
       {:poison, "~> 3.1"},
       {:portmidi, git: "https://github.com/mtrudel/ex-portmidi"},
-      {:sched_ex, "~> 0.7.0"},
+      {:sched_ex, "~> 1.0.0"},
       {:ex_ncurses, git: "https://github.com/mtrudel/ex_ncurses.git"},
       {:distillery, "~> 1.4", runtime: false}
     ]
