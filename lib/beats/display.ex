@@ -325,7 +325,11 @@ defmodule Beats.Display do
     |> Enum.take(16)
     |> Enum.with_index()
     |> Enum.each(fn {bucket, x} ->
-      height = round(10 * (bucket / count))
+      height =
+        case count do
+          0 -> 0
+          _ -> round(10 * (bucket / count))
+        end
 
       for y <- 0..9 do
         if y < height, do: ExNcurses.attron(6), else: ExNcurses.attron(3)
@@ -337,7 +341,7 @@ defmodule Beats.Display do
     ExNcurses.mvprintw(lines - 7, cols - 36, "0us                       1500us")
     ExNcurses.mvprintw(lines - 5, cols - 28, "  Min: #{min}us     ")
     ExNcurses.mvprintw(lines - 4, cols - 28, "  Max: #{max}us     ")
-    ExNcurses.mvprintw(lines - 3, cols - 28, "  Avg: #{trunc(avg)}us     ")
+    ExNcurses.mvprintw(lines - 3, cols - 28, "  Avg: #{trunc(avg || 0)}us     ")
     ExNcurses.mvprintw(lines - 2, cols - 28, "Calls: #{count}     ")
     ExNcurses.refresh()
   end

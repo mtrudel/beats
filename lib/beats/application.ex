@@ -14,6 +14,7 @@ defmodule Beats.Application do
     # List all child processes to be supervised
     children = [
       Beats.Display,
+      Beats.StatsTracker,
       Beats.Metronome,
       Beats.FileWatcher,
       Beats.Output,

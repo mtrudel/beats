@@ -48,7 +48,6 @@ defmodule Beats.Metronome do
 
   def handle_cast(:do_tick, %{timer_pid: timer_pid} = state) do
     Beats.Conductor.do_tick() |> Beats.TempoAgent.set_tick()
-    timer_pid |> SchedEx.stats() |> Beats.Display.update_stats()
     {:noreply, state}
   end
 
@@ -60,10 +59,13 @@ defmodule Beats.Metronome do
         {:ok, timer_pid} =
           SchedEx.run_in(__MODULE__, :do_tick, [], 1, repeat: true, time_scale: Beats.TempoAgent)
 
+        Beats.StatsTracker.set_timer_pid(timer_pid)
+
         {:noreply, %{state | timer_pid: timer_pid}}
 
       _ ->
         Beats.Display.set_playing(false)
+        Beats.StatsTracker.set_timer_pid(nil)
         SchedEx.cancel(timer_pid)
         {:noreply, %{state | timer_pid: nil}}
     end
