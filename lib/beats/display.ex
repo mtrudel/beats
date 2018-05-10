@@ -374,6 +374,9 @@ defmodule Beats.Display do
       -1 ->
         nil
 
+      :resize ->
+        nil
+
       ch ->
         case List.to_string([ch]) do
           "1" -> Beats.Conductor.play_fill(1)
