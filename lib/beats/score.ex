@@ -12,6 +12,8 @@ defmodule Beats.Score do
     with {:ok, body} <- File.read(filename),
          {:ok, json} <- Poison.decode(body) do
       from_json(json)
+    else
+      _ -> nil
     end
   end
 

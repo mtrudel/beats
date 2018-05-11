@@ -229,7 +229,7 @@ defmodule Beats.Display do
 
   defp display_console(string) do
     lines = ExNcurses.lines()
-    ExNcurses.mvprintw(lines - 2, 2, "                        ")
+    ExNcurses.mvprintw(lines - 2, 2, "                                        ")
     ExNcurses.mvprintw(lines - 2, 2, string || "")
     ExNcurses.refresh()
   end

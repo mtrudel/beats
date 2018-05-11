@@ -140,8 +140,14 @@ defmodule Beats.Conductor do
 
   def handle_info({:file_event, _watcher_pid, {path, _events}}, state) do
     if String.ends_with?(path, ".json") do
-      score = Beats.Score.score_from_file(path)
-      {:noreply, %{state | pending_score: score}}
+      case Beats.Score.score_from_file(path) do
+        %Beats.Score{} = score ->
+          {:noreply, %{state | pending_score: score}}
+
+        _ ->
+          Beats.Display.puts("Could not parse #{Path.basename(path)}")
+          {:noreply, state}
+      end
     else
       {:noreply, state}
     end
