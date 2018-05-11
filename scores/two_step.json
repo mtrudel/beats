@@ -1,0 +1,52 @@
+{
+  "name": "Two Step",
+  "bpm": 180,
+  "channel": 2,
+  "parts": [
+    {"name": "BD", "voice": 36, "pattern": "X         X     "},
+    {"name": "HC", "voice": 39, "pattern": "                "},
+    {"name": "SD", "voice": 38, "pattern": "    X       X   "},
+    {"name": "SS", "voice": 37, "pattern": "                "},
+    {"name": "SD", "voice": 40, "pattern": "                "},
+    {"name": "CH", "voice": 44, "pattern": "X   X X X   X X "},
+    {"name": "OH", "voice": 46, "pattern": "  X       X     "}
+  ],
+  "fills": [
+    {
+      "name": "Variation 1",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "X         X     "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "    X       X   "},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 44, "pattern": "X   X X X   X X "},
+        {"name": "OH", "voice": 46, "pattern": "  X       X     "},
+        {"name": "SD", "voice": 38, "pattern": "xxxxxxxxxxxxxxxx"}
+      ]
+    },
+    {
+      "name": "Variation 2",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "X x X x X       "},
+        {"name": "SD", "voice": 38, "pattern": "    x     X X X "},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "OH", "voice": 46, "pattern": "  X   X   X     "},
+        {"name": "SD", "voice": 44, "pattern": "xxxxxxxxxxxxxxxx"}
+      ]
+    },
+    {
+      "name": "Variation 3",
+      "parts": [
+        {"name": "BD", "voice": 36, "pattern": "X         X     "},
+        {"name": "HC", "voice": 39, "pattern": "                "},
+        {"name": "SD", "voice": 38, "pattern": "    X       X   "},
+        {"name": "SS", "voice": 37, "pattern": "                "},
+        {"name": "SD", "voice": 40, "pattern": "                "},
+        {"name": "CH", "voice": 44, "pattern": "X   X x X   X X "},
+        {"name": "OH", "voice": 46, "pattern": "  x       x     "}
+      ]
+    }
+  ]
+}
