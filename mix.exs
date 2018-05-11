@@ -14,7 +14,7 @@ defmodule Beats.MixProject do
 
   def application do
     [
-      extra_applications: [:logger, :portmidi, :ex_ncurses],
+      extra_applications: [:logger, :portmidi, :ex_ncurses, :parse_trans],
       mod: {Beats.Application, []}
     ]
   end
