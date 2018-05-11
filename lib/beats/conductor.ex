@@ -67,7 +67,7 @@ defmodule Beats.Conductor do
     |> Enum.filter(& &1)
     |> Beats.Output.play(channel)
 
-    if (update_display) do
+    if update_display do
       # Update the display
       Beats.Display.set_tick(tick)
     end
@@ -80,11 +80,12 @@ defmodule Beats.Conductor do
 
         {:reply, tick,
          %{
-           tick: 0,
-           score: pending_score,
-           current_score: pending_score,
-           pending_score: nil,
-           pending_fill: nil
+           state
+           | tick: 0,
+             score: pending_score,
+             current_score: pending_score,
+             pending_score: nil,
+             pending_fill: nil
          }}
 
       sixteenth == 15 && pending_fill ->
@@ -93,11 +94,12 @@ defmodule Beats.Conductor do
 
         {:reply, tick,
          %{
-           tick: tick + 1,
-           score: pending_fill,
-           current_score: current_score,
-           pending_score: nil,
-           pending_fill: nil
+           state
+           | tick: tick + 1,
+             score: pending_fill,
+             current_score: current_score,
+             pending_score: nil,
+             pending_fill: nil
          }}
 
       sixteenth == 15 && score != current_score ->
@@ -106,11 +108,12 @@ defmodule Beats.Conductor do
 
         {:reply, tick,
          %{
-           tick: tick + 1,
-           score: current_score,
-           current_score: current_score,
-           pending_score: nil,
-           pending_fill: nil
+           state
+           | tick: tick + 1,
+             score: current_score,
+             current_score: current_score,
+             pending_score: nil,
+             pending_fill: nil
          }}
 
       true ->
