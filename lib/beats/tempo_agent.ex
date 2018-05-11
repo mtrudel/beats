@@ -70,7 +70,7 @@ defmodule Beats.TempoAgent do
   end
 
   def handle_call({:set_swing, swing}, _from, state) do
-    swing = min(max(swing, 0.0), 1.0)
+    swing = min(max(swing, 0.01), 0.99)
     Beats.Display.set_swing(swing)
     {:reply, swing, %{state | swing: swing}}
   end
