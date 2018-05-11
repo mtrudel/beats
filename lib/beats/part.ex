@@ -6,7 +6,7 @@ defmodule Beats.Part do
 
     case Enum.at(pattern, index) do
       0 -> nil
-      1 -> {voice, 64}
+      1 -> {voice, 32}
       2 -> {voice, 127}
     end
   end
