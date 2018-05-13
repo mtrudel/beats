@@ -5,7 +5,7 @@
   "channel": 3,
   "parts": [
     {"name": "BD", "voice": 36, "pattern": "X   XX  X X X   "},
-    {"name": "SD", "voice": 40, "pattern": "   X   X X X    "},
+    {"name": "SD", "voice": 38, "pattern": "   X   X X X    "},
     {"name": "CH", "voice": 42, "pattern": "XXXX"}
   ],
   "fills": [
