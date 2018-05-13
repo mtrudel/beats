@@ -1,7 +1,7 @@
 {
-  "name": "amen",
-  "channel": 2,
-  "bpm": 120,
+  "name": "amen brother",
+  "channel": 4,
+  "bpm": 140,
   "parts": [
     {"name": "BD", "voice": 36, "pattern": "X X       XX    "},
     {"name": "SD", "voice": 38, "pattern": "    X  X X  X  X"},
@@ -14,8 +14,8 @@
       "parts": [
         {"name": "BD", "voice": 36, "pattern": "X X       X     "},
         {"name": "SD", "voice": 38, "pattern": "    X  X X    X "},
-        {"name": "RS", "voice": 51, "pattern": "x x x x x X x x "},
-        {"name": "CS", "voice": 52, "pattern": "                "}
+        {"name": "RS", "voice": 51, "pattern": "x x x x x x   x "},
+        {"name": "CS", "voice": 49, "pattern": "                "}
       ]
     },
     {
@@ -24,7 +24,7 @@
         {"name": "BD", "voice": 36, "pattern": "  XX      X     "},
         {"name": "SD", "voice": 38, "pattern": " X  X  X X    X "},
         {"name": "RS", "voice": 51, "pattern": "x x x x x   x x "},
-        {"name": "CS", "voice": 52, "pattern": "          X     "}
+        {"name": "CS", "voice": 49, "pattern": "          X     "}
       ]
     },
     {
