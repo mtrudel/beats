@@ -1,0 +1,21 @@
+{
+  "name": "when the levee breaks",
+  "bpm": 72,
+  "channel": 4,
+  "parts": [
+    {"name": "CH", "voice": 42, "pattern": "X X X X X X X X "},
+    {"name": "SD", "voice": 38, "pattern": "    Xx      X   "},
+    {"name": "BD", "voice": 36, "pattern": "X      X xXX   x"}
+  ],
+  "fills": [
+    {
+      "name": "cymbal",
+      "parts": [
+        {"name": "CH", "voice": 42, "pattern": "X X X X X X X X "},
+        {"name": "SD", "voice": 38, "pattern": "X   X   X   X   "},
+        {"name": "BD", "voice": 36, "pattern": " X X X X X X X X"},
+        {"name": "CR", "voice": 49, "pattern": " X   X   X   X  "}
+      ]
+    }
+  ]
+}
