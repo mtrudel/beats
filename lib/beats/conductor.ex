@@ -105,6 +105,7 @@ defmodule Beats.Conductor do
       sixteenth == 15 && score != current_score ->
         # Restoring after a fill
         Beats.Display.set_score(current_score)
+        Beats.Display.puts("                                   ")
 
         {:reply, tick,
          %{
