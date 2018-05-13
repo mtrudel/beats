@@ -46,6 +46,7 @@ defmodule Beats.TempoAgent do
   end
 
   def handle_call({:adjust_bpm, by}, from, %{bpm: bpm} = state) do
+    by = if bpm > 250, do: by * 10, else: by
     handle_call({:set_bpm, bpm + by}, from, state)
   end
 
