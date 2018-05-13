@@ -243,7 +243,13 @@ defmodule Beats.Display do
       |> Enum.join()
 
     x = round((ExNcurses.cols() - String.length(aesthetic_name)) / 2)
-    ExNcurses.mvprintw(3, round(ExNcurses.cols() / 2) - 15, "                              ")
+
+    ExNcurses.mvprintw(
+      3,
+      round(ExNcurses.cols() / 2) - 21,
+      "                                          "
+    )
+
     ExNcurses.mvprintw(3, x, aesthetic_name)
     ExNcurses.refresh()
   end
