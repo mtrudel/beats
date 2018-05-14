@@ -320,7 +320,7 @@ defmodule Beats.Display do
 
     type_string =
       case type do
-        :scheduling_delay -> "Scheduling Delay  "
+        :scheduling_delay -> "Dispatch Delay    "
         :quantization_error -> "Quantization Error"
         :execution_time -> "Execution Time    "
       end
