@@ -196,7 +196,13 @@ defmodule Beats.Display do
 
   defp display_bpm_actual(bpm_actual) do
     ms_per_16th = if bpm_actual != 0, do: trunc(1000 / (bpm_actual / 60)), else: 0
-    ExNcurses.mvprintw(2, 4, "Actual BPM: #{Float.round(bpm_actual, 2)} (#{ms_per_16th}ms)   ")
+
+    ExNcurses.mvprintw(
+      2,
+      4,
+      "Actual BPM: #{Float.round(bpm_actual, 2)} (#{ms_per_16th / 4}ms)   "
+    )
+
     ExNcurses.refresh()
   end
 
