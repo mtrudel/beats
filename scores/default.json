@@ -3,10 +3,8 @@
   "bpm": 130,
   "parts": [
     {"name": "BD", "voice": 36, "pattern": "X         X     "},
-    {"name": "HC", "voice": 39, "pattern": "                "},
+    {"name": "HC", "voice": 39, "pattern": "       X        "},
     {"name": "SD", "voice": 38, "pattern": "    X       X   "},
-    {"name": "SS", "voice": 37, "pattern": "                "},
-    {"name": "SD", "voice": 40, "pattern": "                "},
     {"name": "CH", "voice": 44, "pattern": "X   X X X   X X "},
     {"name": "OH", "voice": 46, "pattern": "  X       X     "}
   ],
@@ -17,8 +15,6 @@
         {"name": "BD", "voice": 36, "pattern": "X         X     "},
         {"name": "HC", "voice": 39, "pattern": "                "},
         {"name": "SD", "voice": 38, "pattern": "    X       X   "},
-        {"name": "SS", "voice": 37, "pattern": "                "},
-        {"name": "SD", "voice": 40, "pattern": "                "},
         {"name": "CH", "voice": 44, "pattern": "X   X X X   X X "},
         {"name": "OH", "voice": 51, "pattern": "  X       X     "},
         {"name": "CR", "voice": 52, "pattern": "X               "}
@@ -30,8 +26,6 @@
         {"name": "BD", "voice": 36, "pattern": "                "},
         {"name": "HC", "voice": 39, "pattern": "                "},
         {"name": "SD", "voice": 38, "pattern": "Xx"},
-        {"name": "SS", "voice": 37, "pattern": "                "},
-        {"name": "SD", "voice": 40, "pattern": "                "},
         {"name": "CH", "voice": 42, "pattern": "                "},
         {"name": "OH", "voice": 46, "pattern": "                "}
       ]
