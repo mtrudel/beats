@@ -317,11 +317,11 @@ defmodule Beats.Display do
     cols = ExNcurses.cols()
     ExNcurses.attron(:bold)
     ExNcurses.attron(2)
-    ExNcurses.mvprintw(lines - 20, cols - 27, "Sched")
+    ExNcurses.mvprintw(lines - 19, cols - 27, "Sched")
     ExNcurses.attron(7)
-    ExNcurses.mvprintw(lines - 20, cols - 22, "Ex")
+    ExNcurses.mvprintw(lines - 19, cols - 22, "Ex")
     ExNcurses.attron(1)
-    ExNcurses.mvprintw(lines - 20, cols - 19, "Stats")
+    ExNcurses.mvprintw(lines - 19, cols - 19, "Stats")
     ExNcurses.attroff(:bold)
 
     type_string =
@@ -331,7 +331,7 @@ defmodule Beats.Display do
         :execution_time -> "Execution Time    "
       end
 
-    ExNcurses.mvprintw(lines - 18, cols - 36, type_string)
+    ExNcurses.mvprintw(lines - 17, cols - 36, type_string)
 
     histogram
     |> Enum.take(16)
@@ -345,12 +345,12 @@ defmodule Beats.Display do
 
       for y <- 0..9 do
         if y < height, do: ExNcurses.attron(6), else: ExNcurses.attron(3)
-        ExNcurses.mvprintw(lines - 8 - y, cols - 36 + 2 * x, "  ")
+        ExNcurses.mvprintw(lines - 7 - y, cols - 36 + 2 * x, "  ")
       end
     end)
 
     ExNcurses.attron(1)
-    ExNcurses.mvprintw(lines - 7, cols - 36, "0us                       1500us")
+    ExNcurses.mvprintw(lines - 6, cols - 36, "0us                       1500us")
     ExNcurses.mvprintw(lines - 5, cols - 28, "  Min: #{min}us     ")
     ExNcurses.mvprintw(lines - 4, cols - 28, "  Max: #{max}us     ")
     ExNcurses.mvprintw(lines - 3, cols - 28, "  Avg: #{trunc(avg || 0)}us     ")
@@ -369,12 +369,12 @@ defmodule Beats.Display do
 
     ExNcurses.attron(:bold)
     ExNcurses.attron(7)
-    ExNcurses.mvprintw(1, cols - 38, ~S( ___.                  __           ))
-    ExNcurses.mvprintw(2, cols - 38, ~S( \_ |__   ____ _____ _/  |_  ______ ))
-    ExNcurses.mvprintw(3, cols - 38, ~S(  | __ \_/ __ \\__  \\   __\/  ___/ ))
-    ExNcurses.mvprintw(4, cols - 38, ~S(  | \_\ \  ___/ / __ \|  |  \___ \  ))
-    ExNcurses.mvprintw(5, cols - 38, ~S(  |___  /\___  >____  /__| /____  > ))
-    ExNcurses.mvprintw(6, cols - 38, ~S(      \/     \/     \/          \/  ))
+    ExNcurses.mvprintw(0, cols - 38, ~S( ___.                  __           ))
+    ExNcurses.mvprintw(1, cols - 38, ~S( \_ |__   ____ _____ _/  |_  ______ ))
+    ExNcurses.mvprintw(2, cols - 38, ~S(  | __ \_/ __ \\__  \\   __\/  ___/ ))
+    ExNcurses.mvprintw(3, cols - 38, ~S(  | \_\ \  ___/ / __ \|  |  \___ \  ))
+    ExNcurses.mvprintw(4, cols - 38, ~S(  |___  /\___  >____  /__| /____  > ))
+    ExNcurses.mvprintw(5, cols - 38, ~S(      \/     \/     \/          \/  ))
     ExNcurses.attroff(:bold)
     ExNcurses.attron(1)
   end
