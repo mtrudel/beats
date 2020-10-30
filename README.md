@@ -3,6 +3,8 @@
 Beats is a simple ncurses based drum machine that serves as a demo for the [SchedEx](https://github.com/SchedEx/SchedEx)
 library.
 
+It was demoed at Empex 2018; video is available [here](https://www.youtube.com/watch?v=XN4WuOujr38)
+
 Beats is mostly a toy. Caveat Emptor etc etc.
 
 ## Usage
